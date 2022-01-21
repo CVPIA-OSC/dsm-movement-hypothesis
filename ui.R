@@ -52,17 +52,19 @@ shinyUI(fluidPage(
                 column(width = 12,
                 column(width = 2, 
                 radioButtons("location_type", label = "Select Location Type",
-                choices = list("Watershed" = "watershed", "Region" = "region"), selected = 1)
+                choices = list("Watershed" = "watershed", "Region" = "region"), selected = "watershed")
                 ),
                 column(width = 3, 
-                selectInput("location", label = "Select Location",
-                choices = fallRunDSM::watershed_labels)
+                uiOutput("location_select_input_ui")
                 ))
             ), 
             
             fluidRow(
                 column(width = 12, 
-                plotlyOutput("hypothesis_plot"))
+                plotlyOutput("hypothesis_plot_top"),
+                plotlyOutput("hypothesis_plot_middle"),
+                plotlyOutput("hypothesis_plot_bottom")
+                )
             )
         )
     )
