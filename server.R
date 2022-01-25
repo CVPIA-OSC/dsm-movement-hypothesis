@@ -1,13 +1,16 @@
 library(shiny)
+library(readr)
 
 shinyServer(function(input, output) {
 
     # Reactives -------------------------------
     location_choices <- reactive({
-        switch(input$location_type, 
-        "watershed" = fallRunDSM::watershed_labels, 
+        switch(input$location_type,
+        "watershed" = fallRunDSM::watershed_labels,
         "region" = c("Sacramento", "San Joaquin"))
-    }) 
+    })
+
+    late_fall_run <- read_rds("data/late-fall-run-juveniles-at-chipps.rds")
 
 
     plot_data <- eventReactive(input$location, {
@@ -15,55 +18,79 @@ shinyServer(function(input, output) {
 
         if (total_locations == 1) {
             return(list(top =  {
-                 mtcars %>% select(x = vs, y = am)
-            }, 
+                late_fall_run %>%
+                    filter(watershed == input$location) %>%
+                    select(x = month,
+                           y = count,
+                           watershed = watershed)
+            },
             middle = NULL, bottom = NULL))
-            
+
         } else if (total_locations == 2) {
             return(list(top = {
-                 mtcars %>% select(x = vs, y = am)
-            }, 
-            middle = {mtcars %>% select(x = vs, y = mpg)}, 
+                late_fall_run %>%
+                    filter(watershed == input$location) %>%
+                    select(x = month,
+                           y = count,
+                           watershed = watershed)
+            },
+            middle = {late_fall_run %>%
+                    filter(watershed == input$location) %>%
+                    select(x = month,
+                           y = count,
+                           watershed = watershed)},
             bottom = NULL))
         } else if (total_locations == 3) {
             return(list(top = {
-                 mtcars %>% select(x = vs, y = am)
-            }, 
-            middle = {mtcars %>% select(x = vs, y = mpg)}, 
-            bottom = {mtcars %>% select(x = wt, y = qsec) }))
+                late_fall_run %>%
+                    filter(watershed == input$location) %>%
+                    select(x = month,
+                           y = count,
+                           watershed = watershed)
+            },
+            middle = {late_fall_run %>%
+                    filter(watershed == input$location) %>%
+                    select(x = month,
+                           y = count,
+                           watershed = watershed)},
+            bottom = {late_fall_run %>%
+                    filter(watershed == input$location) %>%
+                    select(x = month,
+                           y = count,
+                           watershed = watershed) }))
         }
 
     })
 
-
-    observe({
-        cat("length of location is: ", length(input$location), "\n")
-    })
+#
+#     observe({
+#         cat("length of location is: ", length(input$location), "\n")
+#     })
 
 
     # Outputs ---------------------------------
     output$location_select_input_ui <- renderUI({
         req(input$location_type)
-        
+
         selectizeInput("location", label = "Select Location",
-        choices = location_choices(), 
+        choices = location_choices(),
         multiple = TRUE,
-        selected = location_choices()[1], 
+        selected = location_choices()[1],
         options = list(maxItems = 3))
     })
 
     output$hypothesis_plot_top <- renderPlotly({
         if (is.null(plot_data()$top)) {return(NULL)}
-        plot_ly(data = plot_data()$top, x = ~x, y = ~y, type = "scatter", mode = "markers")
-    })    
+        plot_ly(data = plot_data()$top, x = ~x, y = ~y, type = "bar", mode = "markers")
+    })
 
     output$hypothesis_plot_middle <- renderPlotly({
         if (is.null(plot_data()$middle)) {return(NULL)}
-        plot_ly(data = plot_data()$middle, x = ~x, y = ~y, type = "scatter", mode = "markers")
-    })  
+        plot_ly(data = plot_data()$middle, x = ~x, y = ~y, type = "bar", mode = "markers")
+    })
 
     output$hypothesis_plot_bottom <- renderPlotly({
         if (is.null(plot_data()$bottom)) {return(NULL)}
-        plot_ly(data = plot_data()$bottom, x = ~x, y = ~y, type = "scatter", mode = "markers")
-    })  
+        plot_ly(data = plot_data()$bottom, x = ~x, y = ~y, type = "bar", mode = "markers")
+    })
 })
