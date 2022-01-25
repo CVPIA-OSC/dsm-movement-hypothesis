@@ -1,6 +1,3 @@
-library(shiny)
-library(readr)
-
 shinyServer(function(input, output) {
 
     # Reactives -------------------------------
@@ -15,7 +12,7 @@ shinyServer(function(input, output) {
 
         if (total_locations == 1) {
             return(list(top =  {
-                late_fall_run %>%
+                late_fall_run_hypothesis %>%
                     filter(watershed == input$location) %>%
                     select(x = month,
                            y = count,
@@ -25,13 +22,13 @@ shinyServer(function(input, output) {
 
         } else if (total_locations == 2) {
             return(list(top = {
-                late_fall_run %>%
+                late_fall_run_hypothesis %>%
                     filter(watershed == input$location) %>%
                     select(x = month,
                            y = count,
                            watershed = watershed)
             },
-            middle = {late_fall_run %>%
+            middle = {late_fall_run_hypothesis %>%
                     filter(watershed == input$location) %>%
                     select(x = month,
                            y = count,
@@ -39,18 +36,18 @@ shinyServer(function(input, output) {
             bottom = NULL))
         } else if (total_locations == 3) {
             return(list(top = {
-                late_fall_run %>%
+                late_fall_run_hypothesis %>%
                     filter(watershed == input$location) %>%
                     select(x = month,
                            y = count,
                            watershed = watershed)
             },
-            middle = {late_fall_run %>%
+            middle = {late_fall_run_hypothesis %>%
                     filter(watershed == input$location) %>%
                     select(x = month,
                            y = count,
                            watershed = watershed)},
-            bottom = {late_fall_run %>%
+            bottom = {late_fall_run_hypothesis %>%
                     filter(watershed == input$location) %>%
                     select(x = month,
                            y = count,
