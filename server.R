@@ -10,9 +10,6 @@ shinyServer(function(input, output) {
         "region" = c("Sacramento", "San Joaquin"))
     })
 
-    late_fall_run <- read_rds("data/late-fall-run-juveniles-at-chipps.rds")
-
-
     plot_data <- eventReactive(input$location, {
         total_locations <- length(input$location)
 
@@ -62,12 +59,6 @@ shinyServer(function(input, output) {
 
     })
 
-#
-#     observe({
-#         cat("length of location is: ", length(input$location), "\n")
-#     })
-
-
     # Outputs ---------------------------------
     output$location_select_input_ui <- renderUI({
         req(input$location_type)
@@ -92,5 +83,6 @@ shinyServer(function(input, output) {
     output$hypothesis_plot_bottom <- renderPlotly({
         if (is.null(plot_data()$bottom)) {return(NULL)}
         plot_ly(data = plot_data()$bottom, x = ~x, y = ~y, type = "bar", mode = "markers")
+
     })
 })
