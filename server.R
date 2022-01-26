@@ -12,11 +12,7 @@ shinyServer(function(input, output) {
 
         if (total_locations == 1) {
             return(list(top =  {
-                late_fall_run_hypothesis %>%
-                    filter(watershed == input$location) %>%
-                    select(x = month,
-                           y = count,
-                           watershed = watershed)
+                single_year_data_selection(late_fall_run_hypothesis, input$location)
             },
             middle = NULL, bottom = NULL))
 
@@ -69,7 +65,14 @@ shinyServer(function(input, output) {
 
     output$hypothesis_plot_top <- renderPlotly({
         if (is.null(plot_data()$top)) {return(NULL)}
-        plot_ly(data = plot_data()$top, x = ~x, y = ~y, type = "bar", mode = "markers")
+        # single_year_plot(plot_data()$top,month_label, count, size_class_label, hypothesis_label)
+        ggplotly(
+            ggplot(data = plot_data()$top, aes(x = month_label, y = count, fill = size_class_label)) +
+                     geom_col() + facet_wrap(vars(hypothesis_label)) +
+                     labs(x = "", fill = "Size Class") +
+                     theme_minimal() +
+                     scale_fill_brewer(palette = "Set2"))
+
     })
 
     output$hypothesis_plot_middle <- renderPlotly({
