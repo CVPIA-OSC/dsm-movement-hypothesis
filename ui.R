@@ -59,13 +59,14 @@ shinyUI(fluidPage(
                 ),
                 column(width = 3, radioButtons("time_unit", label = "Choose Grouping",
                                                inline = TRUE, choices = c("Water Year Type",
-                                                                          "All Years", "Single Year"))))
+                                                                          "All Years", "Single Year"))),
+                column(width = 3, uiOutput("metric_select_input_ui"))
+                )
             ),
 
             fluidRow(
                 column(width = 12,
                 plotlyOutput("hypothesis_plot_top"),
-                plotlyOutput("hypothesis_plot_middle"),
                 plotlyOutput("hypothesis_plot_bottom")
                 )
             )
