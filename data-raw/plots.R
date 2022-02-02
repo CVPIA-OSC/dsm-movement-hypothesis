@@ -20,16 +20,67 @@ sac_valley_year_types <-waterYearType::water_year_indices %>%
 
 write_rds(late_fall_run_hypothesis, "data/late-fall-run-juveniles-at-chipps-clean.rds")
 
+# late_fall_run_watersheds <-late_fall_run_hypothesis %>%
+#   filter(count > 0) %>%
+#   distinct(watershed) %>%
+#   pull()
+
+
+region_selection <- "Sacramento Valley"
+
+#filter count to true
+# water year plots by region  ------------------------
+year_type_selection <- "Critical"
+
+water_year_region <- late_fall_run_hypothesis %>%
+  filter(location == region_selection,
+         Yr_type == year_type_selection,
+         !count == 0) %>%
+  group_by(month_label, hypothesis_label, size_class_label) %>%
+  summarise(median_count = median(count)) %>%
+  ggplot(aes(x = month_label, y = median_count, fill = size_class_label)) +
+  geom_col() + facet_wrap(vars(hypothesis_label)) +
+  labs(x = "", y = "Median Count", fill = "Size Class") +
+  theme_minimal() +
+  scale_fill_brewer(palette = "Set2")
+
+ggplotly(water_year_region)
+
+#all year type plots by region --------------
+all_region <- late_fall_run_hypothesis %>%
+  filter(location == region_selection,
+         !count == 0) %>%
+  group_by(month_label, hypothesis_label, size_class_label) %>%
+  summarise(median_count = median(count)) %>%
+  ggplot(aes(x = month_label, y = median_count, fill = size_class_label)) +
+  geom_col() + facet_wrap(vars(hypothesis_label)) +
+  labs(x = "", y = "Median Count", fill = "Size Class") +
+  theme_minimal() +
+  scale_fill_brewer(palette = "Set2")
+
+ggplotly(all_region)
+
+#single year plots by region ------------------
+year_selection <- 1980
+
+single_region <- late_fall_run_hypothesis %>%
+  filter(location == region_selection,
+         cal_year == year_selection,
+         !count == 0) %>%
+  ggplot(aes(x = month_label, y = count, fill = size_class_label)) +
+  geom_col() + facet_wrap(vars(hypothesis_label)) +
+  labs(x = "", y = "Median Count", fill = "Size Class") +
+  theme_minimal() +
+  scale_fill_brewer(palette = "Set2")
+ggplotly(single_region)
+
 watershed_selection <- "Upper Sacramento River"
-#water year type plots--------------
 
-
-year_type_selection <- "Wet"
-
-
-d <- late_fall_run_hypothesis %>%
-  filter(Yr_type == year_type_selection,
-         watershed == watershed_selection) %>%
+#water years plots by watershed -------------------
+water_year_watershed <- late_fall_run_hypothesis %>%
+  filter(watershed == watershed_selection,
+         Yr_type == year_type_selection,
+         !count == 0) %>%
   group_by(month_label, hypothesis_label, size_class_label) %>%
   summarise(median_count = median(count)) %>%
   ggplot(aes(x = month_label, y = median_count, fill = size_class_label)) +
@@ -38,11 +89,13 @@ d <- late_fall_run_hypothesis %>%
   theme_minimal() +
   scale_fill_brewer(palette = "Set2")
 
-ggplotly(d)
+ggplotly(water_year_watershed)
 
-#all years plots by watershed ------------------
-a <- late_fall_run_hypothesis %>%
-  filter(watershed == watershed_selection) %>%
+#all year plots by watershed -----------------
+
+all_watershed <- late_fall_run_hypothesis %>%
+  filter(watershed == watershed_selection,
+         !count == 0) %>%
   group_by(month_label, hypothesis_label, size_class_label) %>%
   summarise(median_count = median(count)) %>%
   ggplot(aes(x = month_label, y = median_count, fill = size_class_label)) +
@@ -50,14 +103,23 @@ a <- late_fall_run_hypothesis %>%
   labs(x = "", y = "Median Count", fill = "Size Class") +
   theme_minimal() +
   scale_fill_brewer(palette = "Set2")
-ggplotly(a)
 
-#all years plots by region -------------------
+ggplotly(all_watershed)
 
-#single year plots ------------------
+#single year plots by watershed------------------
+single_watershed <- late_fall_run_hypothesis %>%
+  filter(watershed == watershed_selection,
+         cal_year == year_selection) %>%
+  ggplot(aes(x = month_label, y = count, fill = size_class_label)) +
+  geom_col() + facet_wrap(vars(hypothesis_label)) +
+  labs(x = "", fill = "Size Class") +
+  theme_minimal() +
+  scale_fill_brewer(palette = "Set2")
 
-year_selection <- 1982
+ggplotly(single_watershed)
 
+
+# plotly -----------------
 #TODO: more research on faceting plotly needed
 # late_fall_run_hypothesis %>%
 #   filter(watershed == watershed_selection,
@@ -75,13 +137,3 @@ year_selection <- 1982
 #   layout(showlegend = FALSE, showlegend2 = TRUE, showlegend3 = FALSE)
 
 
-p <- late_fall_run_hypothesis %>%
-    filter(watershed == watershed_selection,
-           cal_year == year_selection) %>%
-  ggplot(aes(x = month_label, y = count, fill = size_class_label)) +
-  geom_col() + facet_wrap(vars(hypothesis_label)) +
-  labs(x = "", fill = "Size Class") +
-  theme_minimal() +
-  scale_fill_brewer(palette = "Set2")
-
-ggplotly(p)
