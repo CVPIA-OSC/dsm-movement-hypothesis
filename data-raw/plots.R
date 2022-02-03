@@ -24,7 +24,9 @@ write_rds(late_fall_run_hypothesis, "data/late-fall-run-juveniles-at-chipps-clea
 #   filter(count > 0) %>%
 #   distinct(watershed) %>%
 #   pull()
-
+# late_fall_run_hypothesis %>%
+#   mutate(month_label = factor(month.name[month_label], levels = month.name)) %>%
+#   pull(month_label)
 
 region_selection <- "Sacramento Valley"
 
@@ -40,7 +42,7 @@ water_year_region <- late_fall_run_hypothesis %>%
   summarise(median_count = median(count)) %>%
   ggplot(aes(x = month_label, y = median_count, fill = size_class_label)) +
   geom_col() + facet_wrap(vars(hypothesis_label)) +
-  labs(x = "", y = "Median Count", fill = "Size Class") +
+  labs(x = "", y = "", fill = "Size Class") +
   theme_minimal() +
   scale_fill_brewer(palette = "Set2")
 

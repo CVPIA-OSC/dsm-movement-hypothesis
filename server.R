@@ -77,29 +77,37 @@ shinyServer(function(input, output) {
             # req(exists(input$year_type_selection, inherits = FALSE), cancelOutput = TRUE)
             validate(need(nrow(top_plot_data()) > 0, "Selection yielded no results"))
 
+
+
             ggplotly(
                 ggplot(data = top_plot_data(), aes(
                     x = x,
                     y = y,
                     fill = fill,
                     text =
-                        paste0(
-                            "Month:",
-                            top_plot_data() %>%
-                                mutate(x = factor(month.name[x], levels = month.name)) %>%
-                                pull(x),
-                            "\n",
-                            count_type,
-                            ":",
-                            y
-                        )
+                        paste0("<b>",
+                               fill,
+
+                               "</b>",
+                               "\n",
+                               count_type,
+                               ":",
+                               y)
                 )) +
                     geom_col() + facet_wrap(vars(facet)) +
-                    labs(x = "", fill = "", y = "") +
+                    labs(
+                        x = "",
+                        fill = "",
+                        y = top_plot_data()$count_type[1]
+                    ) +
                     theme_minimal() +
-                    scale_fill_brewer(palette = "Set2"),
+                    scale_fill_brewer(palette = "Set2") +
+                    theme(plot.margin = margin(0, 0, 0, 1.5, "cm")),
                 tooltip =  "text"
-            ) %>% plotly::config(displayModeBar = FALSE) %>%
+            ) %>%layout(
+                hovermode = "x"
+            ) %>%
+                plotly::config(displayModeBar = FALSE) %>%
                 plotly::config(showLink = FALSE)
         })
 
@@ -108,32 +116,37 @@ shinyServer(function(input, output) {
     output$hypothesis_plot_bottom <- renderPlotly({
         validate(need(nrow(bottom_plot_data()) > 0, "Selection yielded no results"))
 
+
         if (is.null(bottom_plot_data())) {
             return(NULL)
         }
         ggplotly(
-            ggplot(data = bottom_plot_data(),
-                   aes(
-                       x = x,
-                       y = y,
-                       fill = fill,
-                       text =
-                           paste0(
-                               "Month:",
-                               bottom_plot_data() %>%
-                                   mutate(x = factor(month.name[x], levels = month.name)) %>%
-                                   pull(x),
-                               "\n",
-                               count_type,
-                               ":",
-                               y
-                           )
-                   )) +
+            ggplot(data = bottom_plot_data(), aes(
+                x = x,
+                y = y,
+                fill = fill,
+                text =
+                    paste0("<b>",
+                           fill,
+
+                           "</b>",
+                           "\n",
+                           count_type,
+                           ":",
+                           y)
+            )) +
                 geom_col() + facet_wrap(vars(facet)) +
-                labs(x = "", fill = "") +
-                theme_minimal() +
-                scale_fill_brewer(palette = "Set2"),
-            tooltip =  "text"
+                labs(
+                    x = "",
+                    fill = "",
+                    y = bottom_plot_data()$count_type[1]
+                )+
+            theme_minimal() +
+            scale_fill_brewer(palette = "Set2") +
+            theme(plot.margin = margin(0, 0, 0, 1.5, "cm")),
+        tooltip =  "text"
+        ) %>%layout(
+        hovermode = "x"
         ) %>%
             plotly::config(displayModeBar = FALSE) %>%
             plotly::config(showLink = FALSE)
