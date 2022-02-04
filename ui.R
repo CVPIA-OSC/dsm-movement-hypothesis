@@ -77,8 +77,7 @@ shinyUI(fluidPage(
                     radioButtons(
                         "time_unit",
                         label = "Choose Grouping",
-                        choices = c("Water Year Type",
-                                    "All Years", "Single Year")
+                        choices = c("Single Year", "All Years", "Water Year Type")
                     )
                 ),
                 column(width = 3, uiOutput("metric_select_input_ui"))
