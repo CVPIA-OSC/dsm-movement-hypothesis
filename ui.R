@@ -2,7 +2,7 @@
 
 shinyUI(fluidPage(
     # Application title
-    titlePanel("DSM Movement Hypothesis"),
+    titlePanel("Late-Fall Run DSM Movement Hypothesis"),
 
     # Sidebar with a slider input for number of bins
     sidebarLayout(
@@ -27,32 +27,17 @@ shinyUI(fluidPage(
             tags$h3("Hypothesis Details"),
             tags$p(
                 tags$b("Hypothesis 1:"),
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-            et dolore magna aliqua. Pellentesque habitant morbi tristique senectus et. Dui faucibus in ornare quam viverra.
-            Vestibulum rhoncus est pellentesque elit ullamcorper dignissim cras tincidunt. Vestibulum mattis ullamcorper velit
-            sed ullamcorper morbi tincidunt. Egestas tellus rutrum tellus pellentesque eu tincidunt tortor aliquam nulla.
-            Volutpat blandit aliquam etiam erat velit scelerisque in. Cursus vitae congue mauris rhoncus aenean vel elit.
-            Ultricies tristique nulla aliquet enim tortor at auctor urna nunc. Amet consectetur adipiscing elit duis.
-            Feugiat in ante metus dictum at tempor commodo ullamcorper a. Euismod nisi porta lorem mollis. Gravida cum sociis
-             natoque penatibus et magnis dis parturient montes. Sed turpis tincidunt id aliquet risus feugiat in ante metus.
-             Venenatis cras sed felis eget velit aliquet sagittis id consectetur. Faucibus purus in massa tempor nec feugiat nisl
-             pretium. Nam at lectus urna duis. Nunc aliquet bibendum enim facilisis gravida neque convallis. Ipsum dolor sit amet
-              consectetur adipiscing elit. Lectus proin nibh nisl condimentum id venenatis a."
+                "Fry leave natal tributaries and rear in the Sacramento River and the delta using habitat filling rules identical to fall-run."
             ),
 
             tags$p(
-                tags$b("hypothesis 2:"),
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-            et dolore magna aliqua. Pellentesque habitant morbi tristique senectus et. Dui faucibus in ornare quam viverra.
-            Vestibulum rhoncus est pellentesque elit ullamcorper dignissim cras tincidunt. Vestibulum mattis ullamcorper velit
-            sed ullamcorper morbi tincidunt. Egestas tellus rutrum tellus pellentesque eu tincidunt tortor aliquam nulla.
-            Volutpat blandit aliquam etiam erat velit scelerisque in. Cursus vitae congue mauris rhoncus aenean vel elit.
-            Ultricies tristique nulla aliquet enim tortor at auctor urna nunc. Amet consectetur adipiscing elit duis.
-            Feugiat in ante metus dictum at tempor commodo ullamcorper a. Euismod nisi porta lorem mollis. Gravida cum sociis
-             natoque penatibus et magnis dis parturient montes. Sed turpis tincidunt id aliquet risus feugiat in ante metus.
-             Venenatis cras sed felis eget velit aliquet sagittis id consectetur. Faucibus purus in massa tempor nec feugiat nisl
-             pretium. Nam at lectus urna duis. Nunc aliquet bibendum enim facilisis gravida neque convallis. Ipsum dolor sit amet
-              consectetur adipiscing elit. Lectus proin nibh nisl condimentum id venenatis a."
+                tags$b("Hypothesis 2:"),
+                "Fry leave natal tributaries and rear in the Sacramento River with 25% migrating below Red Bluff Diversion Dam to rear in the Sacramento River and the delta."
+            ),
+
+            tags$p(
+              tags$b("Hypothesis 3:"),
+              "Fry leave natal tributaries and rear in the Sacramento River and the delta but they do not pass a downstream segment if temperatures are greater than 18°C."
             )
 
 
