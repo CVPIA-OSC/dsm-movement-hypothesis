@@ -98,7 +98,8 @@ shinyServer(function(input, output) {
                     labs(
                         x = "",
                         fill = "",
-                        y = top_plot_data()$count_type[1]
+                        y = top_plot_data()$count_type[1],
+                        title = paste(input$location[1], "Juvenile Salmon at Chipps Island")
                     ) +
                     theme_minimal() +
                     scale_fill_brewer(palette = "Set2") +
@@ -139,11 +140,12 @@ shinyServer(function(input, output) {
                 labs(
                     x = "",
                     fill = "",
-                    y = bottom_plot_data()$count_type[1]
+                    y = bottom_plot_data()$count_type[1],
+                    title = paste(input$location[2], "Juvenile Salmon at Chipps Island")
                 )+
             theme_minimal() +
             scale_fill_brewer(palette = "Set2") +
-            theme(plot.margin = margin(0, 0, 0, 1.5, "cm")),
+            theme(plot.margin = margin(0, 0, 2, 1.5, "cm")),
         tooltip =  "text"
         ) %>%layout(
         hovermode = "x"
