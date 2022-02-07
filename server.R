@@ -45,6 +45,7 @@ shinyServer(function(input, output) {
         options = list(maxItems = 2))
     })
 
+    # TODO remove this commneted out code if no longer used
     # observeEvent(input$time_unit, {
         output$metric_select_input_ui <- renderUI({
             # req(input$time_unit)
@@ -112,7 +113,7 @@ shinyServer(function(input, output) {
         })
 
 
-#
+    # TODO redo indenting overall, tidy up the code (remove blank lines)
     output$hypothesis_plot_bottom <- renderPlotly({
         validate(need(nrow(bottom_plot_data()) > 0, "Selection yielded no results"))
 
