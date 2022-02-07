@@ -1,3 +1,4 @@
+# TODO do we really need this as its own function?
 region_selection <-
   function(data,
            input_location_type,
