@@ -66,7 +66,7 @@ shinyUI(fluidPage(
                     radioButtons(
                         "location_type",
                         label = "Select Location Type",
-                        choices = list("Watershed" = "watershed", "Region" = "region"),
+                        choices = list("Watershed" = "watershed"),
                         selected = "watershed"
                     )
                 ),
