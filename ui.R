@@ -8,21 +8,28 @@ shinyUI(fluidPage(
     sidebarLayout(
         sidebarPanel(
             width = 3,
-            tags$h3("Movement Hypothesis in the DSM"),
-            tags$p(
-                "General information about movement rulesets in the model and inpact. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-            et dolore magna aliqua. Pellentesque habitant morbi tristique senectus et. Dui faucibus in ornare quam viverra.
-            Vestibulum rhoncus est pellentesque elit ullamcorper dignissim cras tincidunt. Vestibulum mattis ullamcorper velit
-            sed ullamcorper morbi tincidunt. Egestas tellus rutrum tellus pellentesque eu tincidunt tortor aliquam nulla."
-            ),
-
             tags$h3("How to use"),
             tags$p(
-                "How to use this Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-            et dolore magna aliqua. Pellentesque habitant morbi tristique senectus et. Dui faucibus in ornare quam viverra.
-            Vestibulum rhoncus est pellentesque elit ullamcorper dignissim cras tincidunt. Vestibulum mattis ullamcorper velit
-            sed ullamcorper morbi tincidunt. Egestas tellus rutrum tellus pellentesque eu tincidunt tortor aliquam nulla."
+                "Select a watershed and grouping type to view outmigration fish proportions at Chipps Island.
+                Selecting a grouping type changes the definition of the proportion slightly, details below."
             ),
+
+            tags$h4("Grouping Types"),
+            tags$ul(
+              tags$li(tags$b("Single Year:"), "Data is filtered to the user selected year. Values shown
+                      are the number of fish for a given watershed/size class/month combination divided by the total oumgrating fish within a watershed that season."),
+              tags$li(tags$b("All Years:"), "All years of simulation are used to calculate average proportions. Values shown are the
+                      average proportions for a given watershed/size class/month combination across all years for the selected watershed."),
+              tags$li(tags$b("Water Year Type:"), "All years that meet the water type selected are used to compute the average
+                      proportions. Values shown are the
+                      average proportions for a given watershed/size class/month combination across all years for the selected watershed and year type.")
+            ),
+
+            tags$p(tags$b("Note:"),"Up to two watersheds can be selected from the 'Select Location' menu. A selected watershed's plot can be removed by deleting it from list of selections using the backspace or delete key."),
+
+            tags$p("Oumigrating fish counts were obtained from runing the",
+                   tags$a("Late-Fall Run DSM", href="https://github.com/CVPIA-OSC/lateFallRunDSM"),
+                   "in deterministic mode."),
 
             tags$h3("Hypothesis Details"),
             tags$p(
@@ -51,7 +58,8 @@ shinyUI(fluidPage(
                     radioButtons(
                         "location_type",
                         label = "Select Location Type",
-                        choices = list("Watershed" = "watershed"),
+                        choices = list("Watershed" = "watershed",
+                                       "Sacramento Valley" = "region"),
                         selected = "watershed"
                     )
                 ),
@@ -73,8 +81,8 @@ shinyUI(fluidPage(
         fluidRow(
             column(
                 width = 12,
-                plotlyOutput("hypothesis_plot_top"),
-                plotlyOutput("hypothesis_plot_bottom")
+                plotlyOutput("hypothesis_plot_top", height = 500),
+                plotlyOutput("hypothesis_plot_bottom", height = 500)
             )
         ))
     )

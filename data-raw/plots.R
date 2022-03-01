@@ -1,5 +1,5 @@
-library(tidyverse)
 library(plotly)
+library(tidyverse)
 
 
 # data ----------------
@@ -137,5 +137,88 @@ ggplotly(single_watershed)
 #     type  = "bar")) %>%
 #   subplot(nrows = 1, shareX = TRUE, shareY = TRUE) %>%
 #   layout(showlegend = FALSE, showlegend2 = TRUE, showlegend3 = FALSE)
+
+
+
+
+
+
+# late_fall_run_hypothesis_raw <- read_rds("data/late-fall-run-juveniles-at-chipps-scaled.rds") %>%
+#   filter(watershed %in% c("Upper Sacramento River", "Clear Creek", "Battle Creek"))
+#
+# sac_valley_year_types <-waterYearType::water_year_indices %>%
+#   filter(location == "Sacramento Valley")
+#
+# size_class_lookup <- c("s"= "small", "m" = "medium", "l" = "large", "vl" = "very large")
+# hypothesis_lookup <- c("one" = "Hypothesis 1", "two" = "Hypothesis 2", "three" = "Hypothesis 3")
+late_fall_run_hypothesis <- late_fall_run_hypothesis_raw %>%
+  gather(size_class, count, s:vl) %>%
+  mutate(size_class_label = factor(size_class_lookup[size_class], levels = c("small", "medium", "large", "very large")),
+         month_label = factor(month.abb[month], levels = month.abb),
+         hypothesis_label = factor(hypothesis_lookup[hypothesis], levels = hypothesis_lookup),
+         cal_year = year + 1979) %>%
+  left_join(sac_valley_year_types, by = c("cal_year" = "WY"))
+#
+# write_rds(late_fall_run_hypothesis, "data/late-fall-run-juveniles-at-chipps-clean-scaled.rds")
+
+
+late_fall_run_hypothesis %>%
+  select(-(Oct_Mar:Index)) %>%
+  group_by(year, month, hypothesis) %>%
+  mutate(prop_of_juvs_at_chipps = count / sum(count)) %>%
+  ungroup() %>%
+  filter(year == 3) %>%
+  select(watershed, hypothesis_label, count, prop_of_juvs_at_chipps, size_class_label, month_label) %>%
+  ggplot(aes(month_label, prop_of_juvs_at_chipps, fill = watershed)) + geom_col(position = "dodge") +
+  facet_wrap(vars(hypothesis_label)) +
+  labs(title = "Year 1 Juvs at Chipps by Natal Watershed")
+
+
+late_fall_run_hypothesis %>%
+  select(-(Oct_Mar:Index)) %>%
+  group_by(watershed, year, hypothesis) %>%
+  mutate(total_fish = sum(count)) %>%
+  ungroup() %>%
+  group_by(watershed, year, month, hypothesis) %>%
+  mutate(prop_fish = count / total_fish,
+         prop_fish = ifelse(is.nan(prop_fish), 0, prop_fish)) %>%
+  filter(year == 3, watershed == "Upper Sacramento River") %>%
+  # select(watershed, hypothesis_label, count, prop_of_juvs_at_chipps, size_class_label, month_label) %>%
+  ggplot(aes(month_label, prop_fish, fill = size_class_label)) + geom_col() +
+  facet_wrap(vars(hypothesis_label)) +
+  labs(title = "Year 1 Juvs at Chipps from Upper Sacramento by Size Class")
+
+
+late_fall_run_hypothesis %>%
+  group_by(watershed, year, month, hypothesis, size_class) %>%
+  summarise(
+    total_fish = sum(count),
+    proportion = count / total_fish
+  ) %>% ungroup() %>%
+  View()
+
+
+late_fall_run_hypothesis %>%
+  select(-(Oct_Mar:Index)) %>%
+  group_by(watershed, year, hypothesis) %>%
+  mutate(total_fish = sum(count)) %>%
+  ungroup() %>%
+  group_by(watershed, year, month, hypothesis) %>%
+  mutate(prop_fish = count / total_fish,
+         prop_fish = ifelse(is.nan(prop_fish), 0, prop_fish)) %>%
+  ungroup() %>%
+  write_rds("data/late-fall-run-juveniles-at-chipps-clean-new-metric.rds")
+
+
+
+
+
+
+
+
+
+
+
+
 
 
