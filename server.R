@@ -5,10 +5,10 @@ shinyServer(function(input, output) {
   # Reactives -------------------------------
   run_choices_watersheds <-reactive({
     switch(input$run,
-           "late_fall_run" = late_fall_run_watersheds,
-           "fall_run" = fall_run_watersheds,
-           "spring_run" = spring_run_watersheds,
-           "winter_run" = winter_run_watersheds,)
+           "Late-Fall Run" = late_fall_run_watersheds,
+           "Fall Run" = fall_run_watersheds,
+           "Spring Run" = spring_run_watersheds,
+           "Winter Run" = winter_run_watersheds,)
   })
   location_choices <- reactive({
     switch(input$location_type,
@@ -50,7 +50,13 @@ shinyServer(function(input, output) {
       }
     } else {
       chipps_trawls_proportions %>%
-        filter(RaceByTag == "LateFall") %>%
+        mutate(RaceByTag = case_when(
+          RaceByTag == "LateFall" ~ "Late-Fall Run",
+          RaceByTag == "Fall" ~ "Fall Run",
+          RaceByTag == "Spring" ~ "Spring Run",
+          RaceByTag == "Winter" ~ "Winter Run"
+        )) %>%
+        filter(RaceByTag == input$run) %>%
         mutate(x = month_label, y = avg_prop_fish, count_type = "Mean Proportion",
                fill = NULL)
     }
@@ -124,7 +130,7 @@ shinyServer(function(input, output) {
           x = "",
           fill = "",
           y = top_plot_data()$count_type[1],
-          title = paste(input$location[1], "Juvenile Salmon at Chipps Island")
+          title = paste(input$location[1], input$run, "Juvenile Salmon at Chipps Island")
         ) +
         theme_minimal() +
         scale_fill_brewer(palette = "Set2") +
@@ -141,7 +147,6 @@ shinyServer(function(input, output) {
   #
   output$hypothesis_plot_bottom <- renderPlotly({
     validate(need(nrow(bottom_plot_data()) > 0, ""))
-    # cat("nrow",nrow(bottom_plot_data()))
 
 
     if (is.null(bottom_plot_data())) {
@@ -170,7 +175,7 @@ shinyServer(function(input, output) {
             x = "",
             fill = "",
             y = bottom_plot_data()$count_type[1],
-            title = paste(input$location[2], "Juvenile Salmon at Chipps Island")
+            title = paste(input$location[2],input$run, "Juvenile Salmon at Chipps Island")
           )+
           theme_minimal() +
           scale_fill_brewer(palette = "Set2") +
@@ -196,7 +201,7 @@ shinyServer(function(input, output) {
             x = "",
             fill = "",
             y = bottom_plot_data()$count_type[1],
-            title = paste("Late-Fall Average Outmigration (Chipps Trawls 1976-2001)")) +
+            title = paste(input$run, "Average Outmigration (Chipps Trawls 1976-2001)")) +
           theme_minimal() +
           scale_fill_brewer(palette = "Set2") +
           theme(plot.margin = margin(1, 0, 0, 1.5, "cm"), legend.position = "none"),

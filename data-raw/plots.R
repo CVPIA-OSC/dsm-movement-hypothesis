@@ -34,7 +34,7 @@ region_selection <- "Sacramento Valley"
 # water year plots by region  ------------------------
 year_type_selection <- "Critical"
 
-water_year_region <- late_fall_run_hypothesis %>%
+water_year_region <- spring_run_hypothesis %>%
   filter(location == region_selection,
          Yr_type == year_type_selection,
          !count == 0) %>%

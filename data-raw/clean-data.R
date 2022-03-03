@@ -19,7 +19,7 @@ late_fall_run_hypothesis <- late_fall_run_hypothesis_raw %>%
 
 
 late_fall_run_hypothesis %>%
-  select(-(Oct_Mar:Index)) %>%
+  # select(-(Oct_Mar:Index)) %>%
   group_by(watershed, year, hypothesis) %>%
   mutate(total_fish = sum(count)) %>%
   ungroup() %>%
