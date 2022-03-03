@@ -2,7 +2,7 @@
 
 shinyUI(fluidPage(
     # Application title
-    titlePanel("Late-Fall Run DSM Movement Hypothesis"),
+    titlePanel("DSM Movement Hypothesis"),
 
     # Sidebar with a slider input for number of bins
     sidebarLayout(
@@ -10,7 +10,7 @@ shinyUI(fluidPage(
             width = 3,
             tags$h3("How to use"),
             tags$p(
-                "Select a watershed and grouping type to view outmigration fish proportions at Chipps Island.
+                "Select a run, a watershed, and a grouping type to view outmigration fish proportions at Chipps Island.
                 Selecting a grouping type changes the definition of the proportion slightly, details below."
             ),
 
@@ -27,14 +27,12 @@ shinyUI(fluidPage(
 
             tags$p(tags$b("Note:"),"Up to two watersheds can be selected from the 'Select Location' menu. A selected watershed's plot can be removed by deleting it from list of selections using the backspace or delete key."),
 
-            tags$p("Oumigrating fish counts were obtained from runing the",
-                   tags$a("Late-Fall Run DSM", href="https://github.com/CVPIA-OSC/lateFallRunDSM"),
-                   "in deterministic mode."),
+            tags$p("Oumigrating fish counts were obtained from runing the selected run in deterministic mode."),
 
             tags$h3("Hypothesis Details"),
             tags$p(
                 tags$b("Hypothesis 1:"),
-                "Fry leave natal tributaries and rear in the Sacramento River and the delta using habitat filling rules identical to fall-run."
+                "Fry leave natal tributaries and rear in the Sacramento River and the delta using habitat filling rules identical to the selected run."
             ),
 
             tags$p(
@@ -53,6 +51,17 @@ shinyUI(fluidPage(
         mainPanel(fluidRow(
             column(
                 width = 12,
+                column(
+                    width = 2,
+                    radioButtons(
+                        "run",
+                        label = "Select Run",
+                        choices = list("Fall Run",
+                                       "Late Fall-Run",
+                                       "Spring Run",
+                                       "Winter Run")
+                    )
+                ),
                 column(
                     width = 2,
                     radioButtons(

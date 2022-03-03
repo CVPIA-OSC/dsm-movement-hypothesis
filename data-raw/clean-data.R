@@ -34,7 +34,7 @@ late_fall_run_hypothesis %>%
 
 # get valley total by summing across all the watersheds, preserve size_class
 valley_totals <- late_fall_run_hypothesis %>%
-  select(-(Oct_Mar:Index)) %>%
+  # select(-(Oct_Mar:Index)) %>%
   group_by(cal_year, month_label, size_class_label , hypothesis_label) %>%
   summarise(valley_count = sum(count)) %>%
   ungroup()
