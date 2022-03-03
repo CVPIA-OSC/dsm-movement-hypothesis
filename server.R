@@ -3,9 +3,16 @@ shinyServer(function(input, output) {
 
 
   # Reactives -------------------------------
+  run_choices_watersheds <-reactive({
+    switch(input$run,
+           "late_fall_run" = late_fall_run_watersheds,
+           "fall_run" = fall_run_watersheds,
+           "spring_run" = spring_run_watersheds,
+           "winter_run" = winter_run_watersheds,)
+  })
   location_choices <- reactive({
     switch(input$location_type,
-           "watershed" = late_fall_run_watersheds,
+           "watershed" = run_choices_watersheds(),
            "region" = c("Sacramento Valley"))
   })
 
@@ -15,10 +22,10 @@ shinyServer(function(input, output) {
 
   top_plot_data <- reactive({
 
-    req(input$location_type, input$location, input$time_unit, input$year_type_selection)
+    req(input$run, input$location_type, input$location, input$time_unit, input$year_type_selection)
 
     data_selection(
-      late_fall_run_hypothesis,
+      input$run,
       input$location_type,
       input$location[1],
       input$time_unit,
@@ -32,7 +39,7 @@ shinyServer(function(input, output) {
     if (input$location_type == "watershed") {
       if (length(input$location) == 2) {
         data_selection(
-          late_fall_run_hypothesis,
+          input$run,
           input$location_type,
           input$location[2],
           input$time_unit,
@@ -134,6 +141,7 @@ shinyServer(function(input, output) {
   #
   output$hypothesis_plot_bottom <- renderPlotly({
     validate(need(nrow(bottom_plot_data()) > 0, ""))
+    # cat("nrow",nrow(bottom_plot_data()))
 
 
     if (is.null(bottom_plot_data())) {

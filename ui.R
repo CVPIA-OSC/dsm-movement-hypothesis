@@ -56,10 +56,10 @@ shinyUI(fluidPage(
                     radioButtons(
                         "run",
                         label = "Select Run",
-                        choices = list("Fall Run",
-                                       "Late Fall-Run",
-                                       "Spring Run",
-                                       "Winter Run")
+                        choices = list("Fall Run" = "fall_run",
+                                       "Late-Fall Run" = "late_fall_run",
+                                       "Spring Run" = "spring_run",
+                                       "Winter Run" = "winter_run")
                     )
                 ),
                 column(

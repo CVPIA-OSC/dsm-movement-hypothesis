@@ -1,9 +1,15 @@
 data_selection <-
-  function(raw_data,
+  function(input_run,
            input_location_type,
            input_location,
            input_time_unit,
            input_year_type_selection ) {
+
+    raw_data <- switch(input_run,
+           "late_fall_run" = late_fall_run_hypothesis,
+           "fall_run" = fall_run_hypothesis,
+           "spring_run" = spring_run_hypothesis,
+           "winter_run" = winter_run_hypothesis)
 
     if (input_location_type == "watershed") {
       selected_data <- raw_data %>%
