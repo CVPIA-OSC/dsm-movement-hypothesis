@@ -10,54 +10,75 @@ fall_run_hypothesis_raw <- fall_run_hypothesis_raw %>%
     values_to = "count"
   )
 
+sac_valley_watersheds <- fallRunDSM::watershed_labels[1:24]
+san_joaquin_watersheds <- fallRunDSM::watershed_labels[25:31]
+
+sac_valley_fall_run <- fall_run_hypothesis_raw %>%
+  filter(watershed %in% sac_valley_watersheds)
+san_joaquin_fall_run <-fall_run_hypothesis_raw %>%
+  filter(watershed %in% san_joaquin_watersheds)
+
 sac_valley_year_types <- waterYearType::water_year_indices %>%
   filter(location == "Sacramento Valley") %>%
+  select(WY, Yr_type)
+san_joaquin_year_types <- waterYearType::water_year_indices %>%
+  filter(location == "San Joaquin Valley") %>%
   select(WY, Yr_type)
 
 size_class_lookup <- c("s"= "small", "m" = "medium", "l" = "large", "vl" = "very large")
 hypothesis_lookup <- c("one" = "Hypothesis 1", "two" = "Hypothesis 2", "three" = "Hypothesis 3")
 
-fall_run_hypothesis <- fall_run_hypothesis_raw %>%
+sac_valley_fall_run <- sac_valley_fall_run %>%
   mutate(size_class_label = factor(size_class_lookup[size_class], levels = c("small", "medium", "large", "very large")),
          month_label = factor(month.abb[month], levels = month.abb),
          hypothesis_label = factor(hypothesis_lookup[hypothesis], levels = hypothesis_lookup),
          cal_year = year + 1979) %>%
   left_join(sac_valley_year_types, by = c("cal_year" = "WY"))
 
+san_joaquin_fall_run <- san_joaquin_fall_run %>%
+  mutate(size_class_label = factor(size_class_lookup[size_class], levels = c("small", "medium", "large", "very large")),
+         month_label = factor(month.abb[month], levels = month.abb),
+         hypothesis_label = factor(hypothesis_lookup[hypothesis], levels = hypothesis_lookup),
+         cal_year = year + 1979) %>%
+  left_join(san_joaquin_year_types, by = c("cal_year" = "WY"))
 
-fall_run_hypothesis %>%
-  # select(-(Oct_Mar:Index)) %>%
+fall_run_hypothesis <- bind_rows(sac_valley_fall_run, san_joaquin_fall_run)
+
+fall_run_outmigration_prop<- fall_run_hypothesis %>%
   group_by(watershed, year, hypothesis) %>%
   mutate(total_fish = sum(count)) %>%
   ungroup() %>%
   group_by(watershed, year, month, hypothesis) %>%
   mutate(prop_fish = count / total_fish,
          prop_fish = ifelse(is.nan(prop_fish), 0, prop_fish)) %>%
-  ungroup() %>%
-  write_rds("data/fall-run-juveniles-at-chipps-clean-new-metric.rds")
+  ungroup()
+
+write_rds(fall_run_outmigration_prop, "data/fall-run-juveniles-at-chipps-proportion-outmigration.rds")
 
 # Valley-wide proportions -------------------------------------------------
-
 # get valley total by summing across all the watersheds, preserve size_class
-valley_totals <- fall_run_hypothesis %>%
-  # select(-(Oct_Mar:Index)) %>%
-  group_by(cal_year, month_label, size_class_label , hypothesis_label) %>%
+sr_valley_totals <- fall_run_hypothesis %>%
+  mutate(region = case_when(
+    watershed %in% sac_valley_watersheds ~ "Sacramento Valley",
+    TRUE ~ "San Joaquin Valley"
+  )) %>%
+  group_by(region, cal_year, month_label, size_class_label , hypothesis_label) %>%
   summarise(valley_count = sum(count)) %>%
   ungroup()
 
 # plot of valley-wide totals by hypothesis and size_class
-valley_wide_outmigration_props <- valley_totals %>%
-  group_by(cal_year, hypothesis_label) %>%
+sr_valley_wide_outmigration_props <- sr_valley_totals %>%
+  group_by(region, cal_year, hypothesis_label) %>%
   mutate(annual_total = sum(valley_count)) %>% # get annual total per hypothesis
   ungroup() %>%
-  group_by(cal_year, month_label, hypothesis_label) %>% # get annual outmigration propotions within a month
+  group_by(region, cal_year, month_label, hypothesis_label) %>% # get annual outmigration propotions within a month
   mutate(prop_fish = valley_count / annual_total,
          prop_fish = ifelse(is.nan(prop_fish), 0, prop_fish)) %>%
   ungroup()
 
 # confirm all looks good
-valley_wide_outmigration_props %>%
-  filter(cal_year == 1999) %>%
+sr_valley_wide_outmigration_props %>%
+  filter(cal_year == 1999, region== "Sacramento Valley") %>%
   ggplot(aes(month_label, prop_fish, fill = size_class_label)) +
   geom_col() +
   facet_wrap(vars(hypothesis_label))
