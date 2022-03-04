@@ -49,12 +49,14 @@ shinyServer(function(input, output) {
       if (input$time_unit == "Single Year"){
         yearly_chipps_trawls_proportions %>%
           filter(RaceByTag == input$run,
-                 year == input$year_type_selection) %>%
+                 year == input$year_type_selection,
+                 month_label %in% top_plot_data()$x) %>%
           select(x= month_label, y= prop_fish, RaceByTag ) %>%
           mutate(count_type= "Proportion")
       }else if(input$time_unit== "All Years"){
         yearly_chipps_trawls_proportions %>%
-          filter(RaceByTag == input$run) %>%
+          filter(RaceByTag == input$run,
+                 month_label %in% top_plot_data()$x) %>%
           group_by(RaceByTag, month_label) %>%
             summarise(avg_prop_fish = mean(prop_fish)) %>%
             ungroup() %>%
@@ -62,7 +64,9 @@ shinyServer(function(input, output) {
           mutate(count_type= "Average Proportion")
       }else{
         yearly_chipps_trawls_proportions %>%
-          filter(RaceByTag == input$run, Yr_type == input$year_type_selection) %>%
+          filter(RaceByTag == input$run,
+                 Yr_type == input$year_type_selection,
+                 month_label %in% top_plot_data()$x) %>%
           group_by(RaceByTag, month_label) %>%
           summarise(avg_prop_fish= mean(prop_fish)) %>%
           ungroup()%>%

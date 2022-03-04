@@ -68,7 +68,7 @@ shinyUI(fluidPage(
                         "location_type",
                         label = "Select Location Type",
                         choices = list("Watershed" = "watershed",
-                                       "Sacramento Valley" = "region"),
+                                       "Central Valley" = "region"),
                         selected = "watershed"
                     )
                 ),
