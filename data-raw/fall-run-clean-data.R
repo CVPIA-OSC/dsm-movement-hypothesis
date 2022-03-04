@@ -57,7 +57,7 @@ write_rds(fall_run_outmigration_prop, "data/fall-run-juveniles-at-chipps-proport
 
 # Valley-wide proportions -------------------------------------------------
 # get valley total by summing across all the watersheds, preserve size_class
-sr_valley_totals <- fall_run_hypothesis %>%
+fr_valley_totals <- fall_run_hypothesis %>%
   mutate(region = case_when(
     watershed %in% sac_valley_watersheds ~ "Sacramento Valley",
     TRUE ~ "San Joaquin Valley"
@@ -67,7 +67,7 @@ sr_valley_totals <- fall_run_hypothesis %>%
   ungroup()
 
 # plot of valley-wide totals by hypothesis and size_class
-sr_valley_wide_outmigration_props <- sr_valley_totals %>%
+fr_valley_wide_outmigration_props <- sr_valley_totals %>%
   group_by(region, cal_year, hypothesis_label) %>%
   mutate(annual_total = sum(valley_count)) %>% # get annual total per hypothesis
   ungroup() %>%
@@ -77,10 +77,10 @@ sr_valley_wide_outmigration_props <- sr_valley_totals %>%
   ungroup()
 
 # confirm all looks good
-sr_valley_wide_outmigration_props %>%
+fr_valley_wide_outmigration_props %>%
   filter(cal_year == 1999, region== "Sacramento Valley") %>%
   ggplot(aes(month_label, prop_fish, fill = size_class_label)) +
   geom_col() +
   facet_wrap(vars(hypothesis_label))
 
-write_rds(valley_wide_outmigration_props, "data/valley-wide-FR-juveniles-at-chipps.rds")
+write_rds(fr_valley_wide_outmigration_props, "data/valley-wide-FR-juveniles-at-chipps.rds")

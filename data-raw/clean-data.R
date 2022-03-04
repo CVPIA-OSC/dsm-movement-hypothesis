@@ -127,6 +127,7 @@ chipps_trawls <- read_csv("data/1976-2001_DJFMP_trawl_fish_and_water_quality_dat
                             Count = col_double()
                           ))
 
+
 chipps_trawls_proportions <- chipps_trawls %>%
   filter(Location == "Chipps Island",
          !is.na(RaceByTag)) %>%
@@ -140,25 +141,29 @@ chipps_trawls_proportions <- chipps_trawls %>%
   mutate(prop_fish = Count / total_fish,
          date = as_date(paste0(year, "-", month, "-01")),
          month_label = factor(month.abb[month], levels = month.abb)) %>%
-  select(cal_year = year, month_label, total_fish, prop_fish, RaceByTag) %>%
-  group_by(RaceByTag, month_label) %>%
-  summarise(avg_prop_fish = mean(prop_fish)) %>%
-  ungroup() %>%
-  arrange(RaceByTag, month_label)
+  select(year, month_label, prop_fish, RaceByTag)
 
 x <- factor(month.abb, levels = month.abb)
-base_ts <- data.frame(month_label = rep(x, 4),
-                      RaceByTag = rep(c("Fall", "LateFall", "Spring", "Winter"), each = 12))
+y <- min(chipps_trawls_proportions$year):max(chipps_trawls_proportions$year)
+base_ts <- expand.grid(month_label= month.abb,RaceByTag=c("Fall", "LateFall", "Spring", "Winter"),year=y)
 
 chipps_trawls_proportions_full <- base_ts %>%
-  left_join(chipps_trawls_proportions) %>%
+  left_join(chipps_trawls_proportions, by=c("month_label","RaceByTag","year")) %>%
   as_tibble() %>%
-  mutate(avg_prop_fish = ifelse(is.na(avg_prop_fish), 0, avg_prop_fish),
-         avg_prop_fish = round(avg_prop_fish, 3))
+  mutate(prop_fish = ifelse(is.na(prop_fish), 0, prop_fish),
+         prop_fish = round(prop_fish, 3),
+         RaceByTag = case_when(
+               RaceByTag == "LateFall" ~ "Late-Fall Run",
+               RaceByTag == "Fall" ~ "Fall Run",
+               RaceByTag == "Spring" ~ "Spring Run",
+               RaceByTag == "Winter" ~ "Winter Run")) %>%
+left_join(sac_valley_year_types, by=c("year"="WY"))
 
-write_rds(chipps_trawls_proportions_full, "data/chipps-trawls-proportions.rds")
+write_rds(chipps_trawls_proportions_full, "data/yearly-chipps-trawls-proportions.rds")
+
 
 chipps_trawls_proportions_full %>%
-  filter(RaceByTag == "LateFall") %>%
+  filter(RaceByTag == "Winter") %>%
+  filter(month_label %in% winter_run_months) %>%
   ggplot(aes(month_label, avg_prop_fish, fill = RaceByTag)) +
   geom_col(position = "dodge")

@@ -31,4 +31,4 @@ sac_valley_year_types <- waterYearType::water_year_indices %>%
   filter(location == "Sacramento Valley") %>%
   select(WY, Yr_type)
 
-chipps_trawls_proportions <- read_rds("data/chipps-trawls-proportions.rds")
+yearly_chipps_trawls_proportions <- read_rds("data/yearly-chipps-trawls-proportions.rds")

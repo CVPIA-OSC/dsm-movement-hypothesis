@@ -83,4 +83,4 @@ sr_valley_wide_outmigration_props %>%
   geom_col() +
   facet_wrap(vars(hypothesis_label))
 
-write_rds(valley_wide_outmigration_props, "data/valley-wide-SR-juveniles-at-chipps.rds")
+write_rds(sr_valley_wide_outmigration_props, "data/valley-wide-SR-juveniles-at-chipps.rds")

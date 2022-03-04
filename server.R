@@ -13,12 +13,9 @@ shinyServer(function(input, output) {
   location_choices <- reactive({
     switch(input$location_type,
            "watershed" = run_choices_watersheds(),
-           "region" = c("Sacramento Valley"))
+           "region" = c("Central Valley"))
   })
 
-  observe({
-    cat("input location: ", input$location[1], "\n")
-  })
 
   top_plot_data <- reactive({
 
@@ -49,16 +46,29 @@ shinyServer(function(input, output) {
         return(NULL)
       }
     } else {
-      chipps_trawls_proportions %>%
-        mutate(RaceByTag = case_when(
-          RaceByTag == "LateFall" ~ "Late-Fall Run",
-          RaceByTag == "Fall" ~ "Fall Run",
-          RaceByTag == "Spring" ~ "Spring Run",
-          RaceByTag == "Winter" ~ "Winter Run"
-        )) %>%
-        filter(RaceByTag == input$run) %>%
-        mutate(x = month_label, y = avg_prop_fish, count_type = "Mean Proportion",
-               fill = NULL)
+      if (input$time_unit == "Single Year"){
+        yearly_chipps_trawls_proportions %>%
+          filter(RaceByTag == input$run,
+                 year == input$year_type_selection) %>%
+          select(x= month_label, y= prop_fish, RaceByTag ) %>%
+          mutate(count_type= "Proportion")
+      }else if(input$time_unit== "All Years"){
+        yearly_chipps_trawls_proportions %>%
+          filter(RaceByTag == input$run) %>%
+          group_by(RaceByTag, month_label) %>%
+            summarise(avg_prop_fish = mean(prop_fish)) %>%
+            ungroup() %>%
+          select(x= month_label, y= avg_prop_fish, RaceByTag ) %>%
+          mutate(count_type= "Average Proportion")
+      }else{
+        yearly_chipps_trawls_proportions %>%
+          filter(RaceByTag == input$run, Yr_type == input$year_type_selection) %>%
+          group_by(RaceByTag, month_label) %>%
+          summarise(avg_prop_fish= mean(prop_fish)) %>%
+          ungroup()%>%
+          select(x= month_label, y= avg_prop_fish, RaceByTag ) %>%
+          mutate(count_type= "Average Proportion")
+      }
     }
   })
 
@@ -205,6 +215,7 @@ shinyServer(function(input, output) {
           theme_minimal() +
           scale_fill_brewer(palette = "Set2") +
           theme(plot.margin = margin(1, 0, 0, 1.5, "cm"), legend.position = "none"),
+        width = 1115,
         tooltip =  "text"
       ) %>%layout(
         hovermode = "x"
