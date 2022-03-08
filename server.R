@@ -49,29 +49,28 @@ shinyServer(function(input, output) {
       if (input$time_unit == "Single Year"){
         yearly_chipps_trawls_proportions %>%
           filter(RaceByTag == input$run,
-                 year == input$year_type_selection,
-                 month_label %in% top_plot_data()$x) %>%
+                 year == input$year_type_selection) %>%
           select(x= month_label, y= prop_fish, RaceByTag ) %>%
           mutate(count_type= "Proportion")
       }else if(input$time_unit== "All Years"){
         yearly_chipps_trawls_proportions %>%
-          filter(RaceByTag == input$run,
-                 month_label %in% top_plot_data()$x) %>%
+          filter(RaceByTag == input$run) %>%
           group_by(RaceByTag, month_label) %>%
             summarise(avg_prop_fish = mean(prop_fish)) %>%
             ungroup() %>%
           select(x= month_label, y= avg_prop_fish, RaceByTag ) %>%
-          mutate(count_type= "Average Proportion")
+          mutate(count_type= "Average Proportion",
+                 y = round(y, 3))
       }else{
         yearly_chipps_trawls_proportions %>%
           filter(RaceByTag == input$run,
-                 Yr_type == input$year_type_selection,
-                 month_label %in% top_plot_data()$x) %>%
+                 Yr_type == input$year_type_selection) %>%
           group_by(RaceByTag, month_label) %>%
           summarise(avg_prop_fish= mean(prop_fish)) %>%
           ungroup()%>%
           select(x= month_label, y= avg_prop_fish, RaceByTag ) %>%
-          mutate(count_type= "Average Proportion")
+          mutate(count_type= "Average Proportion",
+                 y = round(y, 3))
       }
     }
   })
@@ -151,7 +150,8 @@ shinyServer(function(input, output) {
         theme(plot.margin = margin(1, 0, 0, 1.5, "cm")),
       tooltip =  "text"
     ) %>%layout(
-      hovermode = "x"
+      hovermode = "x",
+      legend = list(orientation = "h")
     ) %>%
       plotly::config(displayModeBar = FALSE) %>%
       plotly::config(showLink = FALSE)
@@ -196,7 +196,8 @@ shinyServer(function(input, output) {
           theme(plot.margin = margin(1, 0, 0, 1.5, "cm")),
         tooltip =  "text"
       ) %>%layout(
-        hovermode = "x"
+        hovermode = "x",
+        legend = list(orientation = "h")
       ) %>%
         plotly::config(displayModeBar = FALSE) %>%
         plotly::config(showLink = FALSE)
@@ -215,11 +216,11 @@ shinyServer(function(input, output) {
             x = "",
             fill = "",
             y = bottom_plot_data()$count_type[1],
-            title = paste(input$run, "Average Outmigration (Chipps Trawls 1976-2001)")) +
+            title = paste(input$run, "Proportion Outmigration at Chipps Trawls")) +
           theme_minimal() +
           scale_fill_brewer(palette = "Set2") +
           theme(plot.margin = margin(1, 0, 0, 1.5, "cm"), legend.position = "none"),
-        width = 1115,
+        # width = 1115,
         tooltip =  "text"
       ) %>%layout(
         hovermode = "x"

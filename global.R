@@ -5,9 +5,33 @@ library(plotly)
 source("shiny-helper-functions.R")
 # data ----------------
 late_fall_run_watersheds <- c("Upper Sacramento River", "Clear Creek", "Battle Creek")
-fall_run_watersheds <- c(fallRunDSM::watershed_labels)
-spring_run_watersheds <- c(springRunDSM::watershed_labels)
-winter_run_watersheds <- c(winterRunDSM::watershed_labels)
+fall_run_watersheds <- c("Upper Sacramento River", "Antelope Creek", "Battle Creek",
+                         "Bear Creek", "Big Chico Creek", "Butte Creek", "Clear Creek",
+                         "Cottonwood Creek", "Cow Creek", "Deer Creek", "Elder Creek",
+                         "Mill Creek", "Paynes Creek", "Stony Creek", "Thomes Creek",
+                         "Upper-mid Sacramento River", "Sutter Bypass", "Bear River",
+                         "Feather River", "Yuba River", "Lower-mid Sacramento River",
+                         "Yolo Bypass", "American River", "Lower Sacramento River", "Calaveras River",
+                         "Cosumnes River", "Mokelumne River", "Merced River", "Stanislaus River",
+                         "Tuolumne River", "San Joaquin River")
+spring_run_watersheds <- c("Upper Sacramento River", "Antelope Creek", "Battle Creek",
+                           "Bear Creek", "Big Chico Creek", "Butte Creek", "Clear Creek",
+                           "Cottonwood Creek", "Cow Creek", "Deer Creek", "Elder Creek",
+                           "Mill Creek", "Paynes Creek", "Stony Creek", "Thomes Creek",
+                           "Upper-mid Sacramento River", "Sutter Bypass", "Bear River",
+                           "Feather River", "Yuba River", "Lower-mid Sacramento River",
+                           "Yolo Bypass", "American River", "Lower Sacramento River", "Calaveras River",
+                           "Cosumnes River", "Mokelumne River", "Merced River", "Stanislaus River",
+                           "Tuolumne River", "San Joaquin River")
+winter_run_watersheds <- c("Upper Sacramento River", "Antelope Creek", "Battle Creek",
+                           "Bear Creek", "Big Chico Creek", "Butte Creek", "Clear Creek",
+                           "Cottonwood Creek", "Cow Creek", "Deer Creek", "Elder Creek",
+                           "Mill Creek", "Paynes Creek", "Stony Creek", "Thomes Creek",
+                           "Upper-mid Sacramento River", "Sutter Bypass", "Bear River",
+                           "Feather River", "Yuba River", "Lower-mid Sacramento River",
+                           "Yolo Bypass", "American River", "Lower Sacramento River", "Calaveras River",
+                           "Cosumnes River", "Mokelumne River", "Merced River", "Stanislaus River",
+                           "Tuolumne River", "San Joaquin River")
 
 late_fall_run_hypothesis <- read_rds("data/late-fall-run-juveniles-at-chipps-clean-new-metric.rds") %>%
   filter(watershed %in% late_fall_run_watersheds)
@@ -31,4 +55,6 @@ sac_valley_year_types <- waterYearType::water_year_indices %>%
   filter(location == "Sacramento Valley") %>%
   select(WY, Yr_type)
 
-yearly_chipps_trawls_proportions <- read_rds("data/yearly-chipps-trawls-proportions.rds")
+yearly_chipps_trawls_proportions <- read_rds("data/yearly-chipps-trawls-proportions.rds") %>%
+  mutate(prop_fish = round(prop_fish, 3))
+
