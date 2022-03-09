@@ -41,3 +41,4 @@ vignettes/*.pdf
 
 # ignores large data used in this project
 large-data/*
+data/1976-2001_DJFMP_trawl_fish_and_water_quality_data.csv

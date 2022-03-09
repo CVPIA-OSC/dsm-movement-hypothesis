@@ -33,6 +33,15 @@ shinyServer(function(input, output) {
   bottom_plot_data <- reactive({
     req(input$location_type, input$location, input$time_unit, input$year_type_selection)
 
+    # switch(input$run,
+    #        "Late-Fall Run" = {yearly_chipps_trawls_proportions %>%
+    #            mutate(month_label = factor(month_label, levels = c("Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec","Jan","Feb","Mar"))))
+    #        },
+    #        "Fall Run" = {yearly_chipps_trawls_proportions %>%
+    #            mutate(month_label = factor(month_label, levels = month.abb))},
+    #        "")
+
+
     if (input$location_type == "watershed") {
       if (length(input$location) == 2) {
         data_selection(
@@ -46,32 +55,39 @@ shinyServer(function(input, output) {
         return(NULL)
       }
     } else {
-      if (input$time_unit == "Single Year"){
-        yearly_chipps_trawls_proportions %>%
-          filter(RaceByTag == input$run,
-                 year == input$year_type_selection) %>%
-          select(x= month_label, y= prop_fish, RaceByTag ) %>%
-          mutate(count_type= "Proportion")
-      }else if(input$time_unit== "All Years"){
-        yearly_chipps_trawls_proportions %>%
-          filter(RaceByTag == input$run) %>%
-          group_by(RaceByTag, month_label) %>%
+      if (input$run == "Late-Fall Run"){
+        yearly_chipps_trawls_proportions <- yearly_chipps_trawls_proportions %>%
+          mutate(month_label = factor(month.abb[month_label], levels = c("Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec","Jan","Feb","Mar")))
+      }
+      switch(
+        input$time_unit,
+        "Single Year" = {
+          yearly_chipps_trawls_proportions%>%
+            filter(RaceByTag == input$run,
+                   year == input$year_type_selection) %>%
+            select(x= month_label, y= prop_fish, RaceByTag ) %>%
+            mutate(count_type= "Proportion")
+        },"All Years" = {
+          yearly_chipps_trawls_proportions %>%
+            filter(RaceByTag == input$run) %>%
+            group_by(RaceByTag, month_label) %>%
             summarise(avg_prop_fish = mean(prop_fish)) %>%
             ungroup() %>%
-          select(x= month_label, y= avg_prop_fish, RaceByTag ) %>%
-          mutate(count_type= "Average Proportion",
-                 y = round(y, 3))
-      }else{
-        yearly_chipps_trawls_proportions %>%
-          filter(RaceByTag == input$run,
-                 Yr_type == input$year_type_selection) %>%
-          group_by(RaceByTag, month_label) %>%
-          summarise(avg_prop_fish= mean(prop_fish)) %>%
-          ungroup()%>%
-          select(x= month_label, y= avg_prop_fish, RaceByTag ) %>%
-          mutate(count_type= "Average Proportion",
-                 y = round(y, 3))
-      }
+            select(x= month_label, y= avg_prop_fish, RaceByTag ) %>%
+            mutate(count_type= "Average Proportion",
+                   y = round(y, 3))
+        },"Water Year Type" = {
+          yearly_chipps_trawls_proportions %>%
+            filter(RaceByTag == input$run,
+                   Yr_type == input$year_type_selection) %>%
+            group_by(RaceByTag, month_label) %>%
+            summarise(avg_prop_fish= mean(prop_fish)) %>%
+            ungroup()%>%
+            select(x= month_label, y= avg_prop_fish, RaceByTag ) %>%
+            mutate(count_type= "Average Proportion",
+                   y = round(y, 3))
+        }
+      )
     }
   })
 

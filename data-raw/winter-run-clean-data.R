@@ -52,6 +52,7 @@ winter_run_outmigration_prop<- winter_run_hypothesis %>%
   mutate(prop_fish = count / total_fish,
          prop_fish = ifelse(is.nan(prop_fish), 0, prop_fish)) %>%
   ungroup()
+unique(winter_run_outmigration_prop$month_label)
 
 write_rds(winter_run_outmigration_prop, "data/winter-run-juveniles-at-chipps-proportion-outmigration.rds")
 
@@ -67,7 +68,7 @@ wr_valley_totals <- winter_run_hypothesis %>%
   ungroup()
 
 # plot of valley-wide totals by hypothesis and size_class
-wr_valley_wide_outmigration_props <- sr_valley_totals %>%
+wr_valley_wide_outmigration_props <- wr_valley_totals %>%
   group_by(region, cal_year, hypothesis_label) %>%
   mutate(annual_total = sum(valley_count)) %>% # get annual total per hypothesis
   ungroup() %>%
