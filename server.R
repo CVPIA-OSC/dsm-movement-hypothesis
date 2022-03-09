@@ -33,15 +33,6 @@ shinyServer(function(input, output) {
   bottom_plot_data <- reactive({
     req(input$location_type, input$location, input$time_unit, input$year_type_selection)
 
-    # switch(input$run,
-    #        "Late-Fall Run" = {yearly_chipps_trawls_proportions %>%
-    #            mutate(month_label = factor(month_label, levels = c("Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec","Jan","Feb","Mar"))))
-    #        },
-    #        "Fall Run" = {yearly_chipps_trawls_proportions %>%
-    #            mutate(month_label = factor(month_label, levels = month.abb))},
-    #        "")
-
-
     if (input$location_type == "watershed") {
       if (length(input$location) == 2) {
         data_selection(
