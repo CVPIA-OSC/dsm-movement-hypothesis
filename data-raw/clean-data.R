@@ -160,8 +160,8 @@ chipps_trawls_proportions_full <- base_ts %>%
 left_join(sac_valley_year_types, by=c("year"="WY"))
 
 # levels(late_fall_run_hypothesis$month_label)
-# chipps_trawls_proportions_full<- chipps_trawls_proportions_full %>%
-#   mutate(month_label = factor(month_label, levels = c("Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec","Jan","Feb","Mar")))
+chipps_trawls_proportions_full<- chipps_trawls_proportions_full %>%
+  mutate(month_label = factor(month_label, levels = c("Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec","Jan","Feb","Mar")))
 # # factor(month.abb, levels = c("Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec","Jan","Feb","Mar"))
 # chipps_trawls_proportions_full$month_label
 write_rds(chipps_trawls_proportions_full, "data/yearly-chipps-trawls-proportions.rds")

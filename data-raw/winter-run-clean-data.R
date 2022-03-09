@@ -30,14 +30,14 @@ hypothesis_lookup <- c("one" = "Hypothesis 1", "two" = "Hypothesis 2", "three" =
 
 sac_valley_winter_run <- sac_valley_winter_run %>%
   mutate(size_class_label = factor(size_class_lookup[size_class], levels = c("small", "medium", "large", "very large")),
-         month_label = factor(month.abb[month], levels = month.abb),
+         month_label = factor(month.abb[month], levels = c("Sep","Oct","Nov","Dec","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug")),
          hypothesis_label = factor(hypothesis_lookup[hypothesis], levels = hypothesis_lookup),
          cal_year = year + 1979) %>%
   left_join(sac_valley_year_types, by = c("cal_year" = "WY"))
 
 san_joaquin_winter_run <- san_joaquin_winter_run %>%
   mutate(size_class_label = factor(size_class_lookup[size_class], levels = c("small", "medium", "large", "very large")),
-         month_label = factor(month.abb[month], levels = month.abb),
+         month_label = factor(month.abb[month], levels = c("Sep","Oct","Nov","Dec","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug")),
          hypothesis_label = factor(hypothesis_lookup[hypothesis], levels = hypothesis_lookup),
          cal_year = year + 1979) %>%
   left_join(san_joaquin_year_types, by = c("cal_year" = "WY"))
@@ -52,7 +52,7 @@ winter_run_outmigration_prop<- winter_run_hypothesis %>%
   mutate(prop_fish = count / total_fish,
          prop_fish = ifelse(is.nan(prop_fish), 0, prop_fish)) %>%
   ungroup()
-unique(winter_run_outmigration_prop$month_label)
+
 
 write_rds(winter_run_outmigration_prop, "data/winter-run-juveniles-at-chipps-proportion-outmigration.rds")
 

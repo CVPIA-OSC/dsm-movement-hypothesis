@@ -46,10 +46,22 @@ shinyServer(function(input, output) {
         return(NULL)
       }
     } else {
-      if (input$run == "Late-Fall Run"){
+      switch(
+        input$run,
+        "Late-Fall Run" = {
         yearly_chipps_trawls_proportions <- yearly_chipps_trawls_proportions %>%
           mutate(month_label = factor(month.abb[month_label], levels = c("Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec","Jan","Feb","Mar")))
-      }
+        }, "Fall Run" = {
+          yearly_chipps_trawls_proportions <- yearly_chipps_trawls_proportions %>%
+            mutate(month_label = factor(month.abb[month_label], levels = month.abb))
+        }, "Spring Run" = {
+          yearly_chipps_trawls_proportions <- yearly_chipps_trawls_proportions %>%
+            mutate(month_label = factor(month.abb[month_label], levels = c("Nov","Dec","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct")))
+        }, "Winter Run" = {
+          yearly_chipps_trawls_proportions <- yearly_chipps_trawls_proportions %>%
+            mutate(month_label = factor(month.abb[month_label], levels = c("Sep","Oct","Nov","Dec","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug")))
+        })
+
       switch(
         input$time_unit,
         "Single Year" = {

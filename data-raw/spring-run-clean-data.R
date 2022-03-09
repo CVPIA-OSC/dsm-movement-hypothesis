@@ -30,14 +30,14 @@ hypothesis_lookup <- c("one" = "Hypothesis 1", "two" = "Hypothesis 2", "three" =
 
 sac_valley_spring_run <- sac_valley_spring_run %>%
   mutate(size_class_label = factor(size_class_lookup[size_class], levels = c("small", "medium", "large", "very large")),
-         month_label = factor(month.abb[month], levels = month.abb),
+         month_label = factor(month.abb[month], levels = c("Nov","Dec","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct")),
          hypothesis_label = factor(hypothesis_lookup[hypothesis], levels = hypothesis_lookup),
          cal_year = year + 1979) %>%
   left_join(sac_valley_year_types, by = c("cal_year" = "WY"))
 
 san_joaquin_spring_run <- san_joaquin_spring_run %>%
   mutate(size_class_label = factor(size_class_lookup[size_class], levels = c("small", "medium", "large", "very large")),
-         month_label = factor(month.abb[month], levels = month.abb),
+         month_label = factor(month.abb[month], levels = c("Nov","Dec","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct")),
          hypothesis_label = factor(hypothesis_lookup[hypothesis], levels = hypothesis_lookup),
          cal_year = year + 1979) %>%
   left_join(san_joaquin_year_types, by = c("cal_year" = "WY"))
