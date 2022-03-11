@@ -28,7 +28,7 @@ shinyUI(fluidPage(
             tags$p(tags$b("Note:"),"Up to two watersheds can be selected from the 'Select Location' menu. A selected watershed's plot can be removed by deleting it from list of selections using the backspace or delete key."),
 
             tags$p("Outmigrating fish counts were obtained from runing the selected run in deterministic mode."),
-            tags$p("The survey for outmigration at chipps trawls is a part of the interagency ecological program. The data could be found on", a("EDI Data Portal.", href = "https://portal.edirepository.org/nis/mapbrowse?packageid=edi.244.4")),
+            tags$p("The data for survey for outmigration at Chipps trawls is collected by the Delta Juvenile Fish Monitoring  Program. The data could be found on", a("EDI Data Portal.", href = "https://portal.edirepository.org/nis/mapbrowse?packageid=edi.244.4")),
 
             tags$h3("Hypothesis Details"),
             tags$p(
