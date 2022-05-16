@@ -164,6 +164,7 @@ shinyServer(function(input, output) {
           y = top_plot_data()$count_type[1],
           title = paste(input$location[1], input$run, "Juvenile Salmon at Chipps Island")
         ) +
+        theme(panel.spacing.y = unit(0.5, "lines")) +
         theme_minimal() +
         scale_fill_brewer(palette = "Set2") +
         theme(plot.margin = margin(1, 0, 0, 1.5, "cm")),

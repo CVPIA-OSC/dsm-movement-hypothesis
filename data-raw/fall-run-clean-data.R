@@ -26,7 +26,12 @@ san_joaquin_year_types <- waterYearType::water_year_indices %>%
   select(WY, Yr_type)
 
 size_class_lookup <- c("s"= "small", "m" = "medium", "l" = "large", "vl" = "very large")
-hypothesis_lookup <- c("one" = "Hypothesis 1", "two" = "Hypothesis 2", "three" = "Hypothesis 3")
+hypothesis_lookup <- c("zero" = "Hypothesis 0",
+                       "one" = "Hypothesis 1",
+                       "two" = "Hypothesis 2",
+                       "three" = "Hypothesis 3",
+                       "four" = "Hypothesis 4",
+                       "five" = "Hypothesis 5")
 
 sac_valley_fall_run <- sac_valley_fall_run %>%
   mutate(size_class_label = factor(size_class_lookup[size_class], levels = c("small", "medium", "large", "very large")),
@@ -67,7 +72,7 @@ fr_valley_totals <- fall_run_hypothesis %>%
   ungroup()
 
 # plot of valley-wide totals by hypothesis and size_class
-fr_valley_wide_outmigration_props <- sr_valley_totals %>%
+fr_valley_wide_outmigration_props <- fr_valley_totals %>%
   group_by(region, cal_year, hypothesis_label) %>%
   mutate(annual_total = sum(valley_count)) %>% # get annual total per hypothesis
   ungroup() %>%

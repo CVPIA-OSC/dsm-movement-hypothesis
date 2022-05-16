@@ -32,6 +32,10 @@ shinyUI(fluidPage(
 
             tags$h3("Hypothesis Details"),
             tags$p(
+                tags$b("Hypothesis 0:"),
+                "base filling + base movement"
+            ),
+            tags$p(
                 tags$b("Hypothesis 1:"),
                 "Fry leave natal tributaries and rear in the Sacramento River and the delta using habitat filling rules identical to the selected run."
             ),
@@ -44,6 +48,14 @@ shinyUI(fluidPage(
             tags$p(
               tags$b("Hypothesis 3:"),
               "Fry leave natal tributaries and rear in the Sacramento River and the delta but they do not pass a downstream segment if temperatures are greater than 18°C."
+            ),
+            tags$p(
+                tags$b("Hypothesis 4:"),
+                "density filling + snowglobe movement"
+            ),
+            tags$p(
+                tags$b("Hypothesis 5:"),
+                "density filling + genetic movement"
             )
 
 
