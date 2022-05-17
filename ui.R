@@ -97,7 +97,7 @@ shinyUI(fluidPage(
                         selected = "watershed"
                     )
                 ),
-                column(width = 3,
+                column(width = 2,
                        uiOutput("location_select_input_ui")),
                 column(
                     width = 2,
@@ -107,7 +107,15 @@ shinyUI(fluidPage(
                         choices = c("Single Year", "All Years", "Water Year Type")
                     )
                 ),
-                column(width = 3, uiOutput("metric_select_input_ui"))
+                column(width = 2,
+                       uiOutput("metric_select_input_ui")),
+                column(width = 2,
+                       radioButtons(
+                           "plot_type",
+                           label = "Select Plot Type",
+                           choices = list("Facet By Hypothesis" = "facet_hypothesis",
+                                          "Facet By Month" = "facet_month")
+                       ))
 
             )
         ),
@@ -115,7 +123,7 @@ shinyUI(fluidPage(
         fluidRow(
             column(
                 width = 12,
-                plotlyOutput("hypothesis_plot_top", height = 500),
+                plotlyOutput("hypothesis_plot_top", height = 700),
                 plotlyOutput("hypothesis_plot_bottom", height = 500)
             )
         ))

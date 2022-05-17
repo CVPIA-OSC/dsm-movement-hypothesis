@@ -1,15 +1,34 @@
+
 data_selection <-
   function(input_run,
            input_location_type,
            input_location,
            input_time_unit,
-           input_year_type_selection ) {
+           input_year_type_selection,
+           input_plot_type) {
 
-    raw_data <- switch(input_run,
-           "Late-Fall Run" = late_fall_run_hypothesis,
-           "Fall Run" = fall_run_hypothesis,
-           "Spring Run" = spring_run_hypothesis,
-           "Winter Run" = winter_run_hypothesis)
+    hypothesis_abbr_lookup <- c("Base Filling + Base Movement" = "H0",
+                           "Base Filling + Snowglobe Movement" = "H1",
+                           "Base Filling + Genetics Movement" = "H2",
+                           "Density Filling + Base Movement" = "H3",
+                           "Density Filling + Snowglobe Movement" = "H4",
+                           "Density Filling + Genetics Movement" = "H5")
+
+    raw_data <- switch(
+      input_run,
+      "Late-Fall Run" = late_fall_run_hypothesis,
+      "Fall Run" = fall_run_hypothesis,
+      "Spring Run" = spring_run_hypothesis,
+      "Winter Run" = winter_run_hypothesis
+    )
+
+    # raw_valley_wide_data <- switch(
+    #   input_plot_type,
+    #   "Late-Fall Run" = late_fall_run_valley_wide,
+    #   "Fall Run" = fall_run_valley_wide,
+    #   "Spring Run" = spring_run_valley_wide,
+    #   "Winter Run" = winter_run_valley_wide
+    # )
 
     if (input_location_type == "watershed") {
       selected_data <- raw_data %>%
@@ -30,45 +49,93 @@ data_selection <-
         ungroup() %>%
         left_join(sac_valley_year_types, by=c("cal_year"="WY"))
     }
+    if (input_plot_type == "facet_hypothesis"){
+      if (input_time_unit == "Single Year") {
+        selected_data %>%
+          filter(cal_year == input_year_type_selection) %>%
+          mutate(count_type = "Proportion", prop_fish = round(prop_fish, 3)) %>%
+          select(
+            x = month_label,
+            y = prop_fish,
+            fill = size_class_label,
+            facet = hypothesis_label,
+            count_type = count_type
+          )
+      } else if (input_time_unit == "Water Year Type") {
+        selected_data %>%
+          filter(Yr_type == input_year_type_selection) %>%
+          group_by(month_label, hypothesis_label, size_class_label) %>%
+          summarise(median_count = mean(prop_fish)) %>%
+          mutate(count_type = "Average Proportion", median_count = round(median_count, 3)) %>%
+          select(
+            x = month_label,
+            y = median_count,
+            fill = size_class_label,
+            facet = hypothesis_label,
+            count_type = count_type
+          )
 
-    if (input_time_unit == "Single Year") {
-      selected_data %>%
-        filter(cal_year == input_year_type_selection) %>%
-        mutate(count_type = "Proportion", prop_fish = round(prop_fish, 3)) %>%
-        select(
-          x = month_label,
-          y = prop_fish,
-          fill = size_class_label,
-          facet = hypothesis_label,
-          count_type = count_type
-        )
-    } else if (input_time_unit == "Water Year Type") {
-      selected_data %>%
-        filter(Yr_type == input_year_type_selection) %>%
-        group_by(month_label, hypothesis_label, size_class_label) %>%
-        summarise(median_count = mean(prop_fish)) %>%
-        mutate(count_type = "Average Proportion", median_count = round(median_count, 3)) %>%
-        select(
-          x = month_label,
-          y = median_count,
-          fill = size_class_label,
-          facet = hypothesis_label,
-          count_type = count_type
-        )
+      } else if (input_time_unit == "All Years") {
+        selected_data %>%
+          group_by(month_label, hypothesis_label, size_class_label) %>%
+          summarise(median_count = mean(prop_fish)) %>%
+          mutate(count_type = "Average Proportion", median_count = round(median_count, 3)) %>%
+          select(
+            x = month_label,
+            y = median_count,
+            fill = size_class_label,
+            facet = hypothesis_label,
+            count_type = count_type
+          )
+      }
+    } else if (input_plot_type == "facet_month"){
+      if (input_time_unit == "Single Year") {
+        selected_data %>%
+          filter(cal_year == input_year_type_selection) %>%
+          mutate(count_type = "Proportion",
+                 prop_fish = round(prop_fish, 3),
+                 hypothesis_abbr_label = factor(hypothesis_abbr_lookup[hypothesis_label], levels= hypothesis_abbr_lookup)) %>%
+          select(
+            x = hypothesis_abbr_label,
+            y = prop_fish,
+            fill = size_class_label,
+            facet = month_label,
+            count_type = count_type
+          )
+      } else if (input_time_unit == "Water Year Type") {
+        selected_data %>%
+          filter(Yr_type == input_year_type_selection) %>%
+          group_by(month_label, hypothesis_label, size_class_label) %>%
+          summarise(median_count = mean(prop_fish)) %>%
+          mutate(count_type = "Average Proportion",
+                 median_count = round(median_count, 3),
+                 hypothesis_abbr_label = factor(hypothesis_abbr_lookup[hypothesis_label], levels= hypothesis_abbr_lookup)) %>%
+          select(
+            x = hypothesis_abbr_label,
+            y = median_count,
+            fill = size_class_label,
+            facet = month_label,
+            count_type = count_type
+          )
 
-    } else if (input_time_unit == "All Years") {
-      selected_data %>%
-        group_by(month_label, hypothesis_label, size_class_label) %>%
-        summarise(median_count = mean(prop_fish)) %>%
-        mutate(count_type = "Average Proportion", median_count = round(median_count, 3)) %>%
-        select(
-          x = month_label,
-          y = median_count,
-          fill = size_class_label,
-          facet = hypothesis_label,
-          count_type = count_type
-        )
+      } else if (input_time_unit == "All Years") {
+        selected_data %>%
+          group_by(month_label, hypothesis_label, size_class_label) %>%
+          summarise(median_count = mean(prop_fish)) %>%
+          mutate(count_type = "Average Proportion",
+                 median_count = round(median_count, 3),
+                 hypothesis_abbr_label = factor(hypothesis_abbr_lookup[hypothesis_label], levels= hypothesis_abbr_lookup)) %>%
+          select(
+            x = hypothesis_abbr_label,
+            y = median_count,
+            fill = size_class_label,
+            facet = month_label,
+            count_type = count_type
+          )
+      }
     }
+
+
   }
 
 # }
