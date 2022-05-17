@@ -30,12 +30,12 @@ san_joaquin_year_types <- waterYearType::water_year_indices %>%
   select(WY, Yr_type)
 
 size_class_lookup <- c("s"= "small", "m" = "medium", "l" = "large", "vl" = "very large")
-hypothesis_lookup <- c("zero" = "Hypothesis 0",
-                       "one" = "Hypothesis 1",
-                       "two" = "Hypothesis 2",
-                       "three" = "Hypothesis 3",
-                       "four" = "Hypothesis 4",
-                       "five" = "Hypothesis 5")
+hypothesis_lookup <- c("zero" = "Base Filling + Base Movement",
+                       "one" = "Base Filling + Snowglobe Movement",
+                       "two" = "Base Filling + Genetics Movement",
+                       "three" = "Density Filling + Base Movement",
+                       "four" = "Density Filling + Snowglobe Movement",
+                       "five" = "Density Filling + Genetics Movement")
 
 sac_valley_fall_run <- sac_valley_fall_run %>%
   mutate(size_class_label = factor(size_class_lookup[size_class], levels = c("small", "medium", "large", "very large")),
