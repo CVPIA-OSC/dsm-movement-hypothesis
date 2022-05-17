@@ -31,35 +31,47 @@ shinyUI(fluidPage(
             tags$p("The data for survey for outmigration at Chipps trawls is collected by the Delta Juvenile Fish Monitoring  Program. The data could be found on", a("EDI Data Portal.", href = "https://portal.edirepository.org/nis/mapbrowse?packageid=edi.244.4")),
 
             tags$h3("Hypothesis Details"),
-            tags$p(
-                tags$b("Hypothesis 0:"),
-                "base filling + base movement"
-            ),
-            tags$p(
-                tags$b("Hypothesis 1:"),
-                "Fry leave natal tributaries and rear in the Sacramento River and the delta using habitat filling rules identical to the selected run."
+
+            conditionalPanel(
+                condition = "input.run == 'Fall Run'",
+
+
+                tags$p(tags$b("Hypothesis 0:"),
+                       "base filling + base movement"),
+                tags$p(tags$b("Hypothesis 1:"),
+                       "base filling + snowglobe movement"),
+
+                tags$p(tags$b("Hypothesis 2:"),
+                       "base filling + genetic movement"),
+
+                tags$p(tags$b("Hypothesis 3:"),
+                       "density filling + base movement"),
+                tags$p(tags$b("Hypothesis 4:"),
+                       "density filling + snowglobe movement"),
+                tags$p(tags$b("Hypothesis 5:"),
+                       "density filling + genetic movement")
             ),
 
-            tags$p(
-                tags$b("Hypothesis 2:"),
-                "Fry leave natal tributaries and rear in the Sacramento River with 25% migrating below Red Bluff Diversion Dam to rear in the Sacramento River and the delta."
-            ),
+            conditionalPanel(
+                condition = "input.run == 'Late-Fall Run' | input.run == 'Spring Run' | input.run == 'Winter Run'",
 
-            tags$p(
-              tags$b("Hypothesis 3:"),
-              "Fry leave natal tributaries and rear in the Sacramento River and the delta but they do not pass a downstream segment if temperatures are greater than 18°C."
-            ),
-            tags$p(
-                tags$b("Hypothesis 4:"),
-                "density filling + snowglobe movement"
-            ),
-            tags$p(
-                tags$b("Hypothesis 5:"),
-                "density filling + genetic movement"
+                tags$p(
+                    tags$b("Hypothesis 1:"),
+                    "Fry leave natal tributaries and rear in the Sacramento River and the delta using habitat filling rules identical to the selected run."
+                ),
+
+                tags$p(
+                    tags$b("Hypothesis 2:"),
+                    "Fry leave natal tributaries and rear in the Sacramento River with 25% migrating below Red Bluff Diversion Dam to rear in the Sacramento River and the delta."
+                ),
+
+
+                tags$p(
+                    tags$b("Hypothesis 3:"),
+                    "Fry leave natal tributaries and rear in the Sacramento River and the delta but they do not pass a downstream segment if temperatures are greater than 18°C."
+                )
             )
-
-
-        ),
+            ),
 
         mainPanel(fluidRow(
             column(
