@@ -93,8 +93,8 @@ fr_valley_wide_outmigration_props <- fr_valley_totals %>%
 # confirm all looks good
 fr_valley_wide_outmigration_props %>%
   filter(cal_year == 1999, region== "Sacramento Valley") %>%
-  ggplot(aes(month_label, prop_fish, fill = size_class_label)) +
+  ggplot(aes(hypothesis_label, prop_fish, fill = size_class_label)) +
   geom_col() +
-  facet_wrap(vars(hypothesis_label))
+  facet_wrap(vars(month_label), nrow = 4)
 
 write_rds(fr_valley_wide_outmigration_props, "data/valley-wide-FR-juveniles-at-chipps.rds")
