@@ -1,6 +1,10 @@
 library(tidyverse)
 library(lubridate)
 
+s <- fallRunDSM::fall_run_model()
+ss <- fallRunDSM::fall_run_model(seeds = s, mode = "simulate")
+write_rds(ss$juveniles_at_chipps, "data/fall-run-juveniles-at-chipps.rds")
+
 fall_run_hypothesis_raw <- read_rds("data/fall-run-juveniles-at-chipps.rds")
 
 fall_run_hypothesis_raw <- fall_run_hypothesis_raw %>%
@@ -57,6 +61,11 @@ fall_run_outmigration_prop<- fall_run_hypothesis %>%
   mutate(prop_fish = count / total_fish,
          prop_fish = ifelse(is.nan(prop_fish), 0, prop_fish)) %>%
   ungroup()
+
+# Confirm we get 1
+fall_run_outmigration_prop %>%
+  filter(cal_year == 1995, watershed == "Upper Sacramento River",
+         hypothesis == "zero") %>% pull(prop_fish) %>% sum()
 
 write_rds(fall_run_outmigration_prop, "data/fall-run-juveniles-at-chipps-proportion-outmigration.rds")
 
