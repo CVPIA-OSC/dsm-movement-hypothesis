@@ -19,19 +19,20 @@ shinyServer(function(input, output) {
 
   top_plot_data <- reactive({
 
-    req(input$run, input$location_type, input$location, input$time_unit, input$year_type_selection)
+    req(input$run, input$location_type, input$location, input$time_unit, input$year_type_selection, input$plot_type)
 
     data_selection(
       input$run,
       input$location_type,
       input$location[1],
       input$time_unit,
-      input$year_type_selection
+      input$year_type_selection,
+      input$plot_type
     )
   })
 
   bottom_plot_data <- reactive({
-    req(input$location_type, input$location, input$time_unit, input$year_type_selection)
+    req(input$location_type, input$location, input$time_unit, input$year_type_selection, input$plot_type)
 
     if (input$location_type == "watershed") {
       if (length(input$location) == 2) {
@@ -40,7 +41,8 @@ shinyServer(function(input, output) {
           input$location_type,
           input$location[2],
           input$time_unit,
-          input$year_type_selection
+          input$year_type_selection,
+          input$plot_type
         )}
       else{
         return(NULL)
