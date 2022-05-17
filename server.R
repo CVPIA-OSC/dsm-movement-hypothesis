@@ -168,7 +168,7 @@ shinyServer(function(input, output) {
         ) +
         theme_minimal() +
         scale_fill_brewer(palette = "Set2") +
-        theme(panel.spacing.y = unit(1, "cm"),
+        theme(panel.spacing.y = unit(0.5, "cm"),
               plot.margin = margin(1, 1, 0, 1.5, "cm")),
       tooltip =  "text"
     ) %>%layout(

@@ -123,7 +123,7 @@ shinyUI(fluidPage(
         fluidRow(
             column(
                 width = 12,
-                plotlyOutput("hypothesis_plot_top", height = 500),
+                plotlyOutput("hypothesis_plot_top", height = 700),
                 plotlyOutput("hypothesis_plot_bottom", height = 500)
             )
         ))
