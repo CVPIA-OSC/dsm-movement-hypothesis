@@ -31,13 +31,13 @@ san_joaquin_year_types <- waterYearType::water_year_indices %>%
 
 size_class_lookup <- c("s"= "small", "m" = "medium", "l" = "large", "vl" = "very large")
 hypothesis_lookup <- c(
-  "zero" = "Base fill + no additional movement",
-  "one" = "Base fill + Snow Glove Movement",
+  "zero" = "Base fill + No Additional Movement",
+  "one" = "Base fill + Snow Globe Movement",
   "two" = "Base fill + Genetics Movement",
   "three" = "Base fill + Temperature Movement",
-  "four" = "Base fill + Time Movemennt",
-  "five" = "Density fill + no additional movement",
-  "six" = "Density fill + Snow Glove Movement",
+  "four" = "Base fill + Time Movement",
+  "five" = "Density fill + No Additional Movement",
+  "six" = "Density fill + Snow Globe Movement",
   "seven" = "Density fill + Genetics Movement",
   "eight" = "Density fill + Temperature Movement",
   "nine" = "Density fill + Time Movemennt"

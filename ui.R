@@ -37,20 +37,29 @@ shinyUI(fluidPage(
 
 
                 tags$p(tags$b("Hypothesis 0:"),
-                       "base filling + base movement"),
+                       "Base fill + No Additional Movement"),
                 tags$p(tags$b("Hypothesis 1:"),
-                       "base filling + snowglobe movement"),
+                       "Base fill + Snow Globe Movement"),
 
                 tags$p(tags$b("Hypothesis 2:"),
-                       "base filling + genetic movement"),
+                       "Base fill + Genetic Movement"),
 
                 tags$p(tags$b("Hypothesis 3:"),
-                       "density filling + base movement"),
+                       "Base fill + Temperature Movement"),
                 tags$p(tags$b("Hypothesis 4:"),
-                       "density filling + snowglobe movement"),
+                       "Base fill + Time Movement"),
                 tags$p(tags$b("Hypothesis 5:"),
-                       "density filling + genetic movement")
+                       "Density fill + Genetic Movement"),
+                tags$p(tags$b("Hypothesis 6:"),
+                       "Density fill + Snow Globe Movement"),
+                tags$p(tags$b("Hypothesis 7:"),
+                       "Density fill + Genetics Movement"),
+                tags$p(tags$b("Hypothesis 8:"),
+                       "Density fill + Temperature Movement"),
+                tags$p(tags$b("Hypothesis 9:"),
+                       "Density fill + Time Movement"),
             ),
+
 
             conditionalPanel(
                 condition = "input.run == 'Late-Fall Run' | input.run == 'Spring Run' | input.run == 'Winter Run'",
