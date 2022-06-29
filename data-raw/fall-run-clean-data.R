@@ -32,15 +32,15 @@ san_joaquin_year_types <- waterYearType::water_year_indices %>%
 size_class_lookup <- c("s"= "small", "m" = "medium", "l" = "large", "vl" = "very large")
 hypothesis_lookup <- c(
   "zero" = "Base fill + No Additional Movement",
-  "one" = "Base fill + Snow Globe Movement",
-  "two" = "Base fill + Genetics Movement",
-  "three" = "Base fill + Temperature Movement",
-  "four" = "Base fill + Time Movement",
+  "one" = "Base fill + Snow Globe",
+  "two" = "Base fill + Genetics",
+  "three" = "Base fill + Temperature",
+  "four" = "Base fill + Time",
   "five" = "Density fill + No Additional Movement",
-  "six" = "Density fill + Snow Globe Movement",
-  "seven" = "Density fill + Genetics Movement",
-  "eight" = "Density fill + Temperature Movement",
-  "nine" = "Density fill + Time Movemennt"
+  "six" = "Density fill + Snow Globe",
+  "seven" = "Density fill + Genetics",
+  "eight" = "Density fill + Temperature",
+  "nine" = "Density fill + Time"
 )
 
 sac_valley_fall_run <- sac_valley_fall_run %>%
