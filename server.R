@@ -215,7 +215,7 @@ shinyServer(function(input, output) {
             title = paste(input$location[2],input$run, "Juvenile Salmon at Chipps Island")
           )+
           theme_minimal() +
-          scale_fill_brewer(palette = "Set2") +
+          scale_fill_brewer(palette = "PuOr") +
           theme(plot.margin = margin(1, 0, 0, 1.5, "cm")),
         tooltip =  "text"
       ) %>%layout(
@@ -241,7 +241,7 @@ shinyServer(function(input, output) {
             y = bottom_plot_data()$count_type[1],
             title = paste(input$run, "Proportion Outmigration at Chipps Trawls")) +
           theme_minimal() +
-          scale_fill_brewer(palette = "Set2") +
+          scale_fill_brewer(palette = "PuOr") +
           theme(plot.margin = margin(1, 0, 0, 1.5, "cm"), legend.position = "none"),
         # width = 1115,
         tooltip =  "text"
