@@ -1,7 +1,6 @@
 shinyServer(function(input, output) {
   # location_type = "watershed"
 
-  mycols1 <- c("#A1DAB4", "#41B6C4", "#2C7FB8", "#253494")
   # Reactives -------------------------------
   run_choices_watersheds <-reactive({
     switch(input$run,
