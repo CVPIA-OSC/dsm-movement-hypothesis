@@ -1,6 +1,7 @@
 library(shiny)
 library(tidyverse)
 library(plotly)
+library(RColorBrewer)
 
 source("shiny-helper-functions.R")
 # data ----------------

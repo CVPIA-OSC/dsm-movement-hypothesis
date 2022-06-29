@@ -1,7 +1,7 @@
 shinyServer(function(input, output) {
   # location_type = "watershed"
 
-
+  mycols1 <- c("#A1DAB4", "#41B6C4", "#2C7FB8", "#253494")
   # Reactives -------------------------------
   run_choices_watersheds <-reactive({
     switch(input$run,
@@ -167,7 +167,7 @@ shinyServer(function(input, output) {
           title = paste(input$location[1], input$run, "Juvenile Salmon at Chipps Island")
         ) +
         theme_minimal() +
-        scale_fill_brewer(palette = "Set2") +
+        scale_fill_brewer(palette = "PuOr") +
         theme(panel.spacing.y = unit(0.5, "cm"),
               panel.spacing.x = unit(0.5, "cm"),
               plot.margin = margin(1, 1, 0, 1.5, "cm")),
