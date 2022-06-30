@@ -49,7 +49,7 @@ shinyUI(fluidPage(
                 tags$p(tags$b("Hypothesis 4:"),
                        "Base fill + Time Movement"),
                 tags$p(tags$b("Hypothesis 5:"),
-                       "Density fill + Genetic Movement"),
+                       "Density fill + No Additional Movement"),
                 tags$p(tags$b("Hypothesis 6:"),
                        "Density fill + Snow Globe Movement"),
                 tags$p(tags$b("Hypothesis 7:"),
