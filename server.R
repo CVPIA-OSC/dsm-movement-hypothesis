@@ -1,7 +1,6 @@
 shinyServer(function(input, output) {
   # location_type = "watershed"
 
-
   # Reactives -------------------------------
   run_choices_watersheds <-reactive({
     switch(input$run,
@@ -158,7 +157,7 @@ shinyServer(function(input, output) {
                  ":",
                  y)
       )) +
-        geom_col() + facet_wrap(vars(facet)) +
+        geom_col() + facet_wrap(vars(facet), ncol = 3) +
         scale_y_continuous(limits = c(0, 1)) +
         labs(
           x = "",
@@ -167,8 +166,9 @@ shinyServer(function(input, output) {
           title = paste(input$location[1], input$run, "Juvenile Salmon at Chipps Island")
         ) +
         theme_minimal() +
-        scale_fill_brewer(palette = "Set2") +
-        theme(panel.spacing.y = unit(0.5, "cm"),
+        scale_fill_brewer(palette = "PuOr") +
+        theme(axis.text.x = element_text(angle = 45, hjust = 1),
+              panel.spacing.y = unit(0.5, "cm"),
               plot.margin = margin(1, 1, 0, 1.5, "cm")),
       tooltip =  "text"
     ) %>%layout(
@@ -214,7 +214,7 @@ shinyServer(function(input, output) {
             title = paste(input$location[2],input$run, "Juvenile Salmon at Chipps Island")
           )+
           theme_minimal() +
-          scale_fill_brewer(palette = "Set2") +
+          scale_fill_brewer(palette = "PuOr") +
           theme(plot.margin = margin(1, 0, 0, 1.5, "cm")),
         tooltip =  "text"
       ) %>%layout(
@@ -240,7 +240,7 @@ shinyServer(function(input, output) {
             y = bottom_plot_data()$count_type[1],
             title = paste(input$run, "Proportion Outmigration at Chipps Trawls")) +
           theme_minimal() +
-          scale_fill_brewer(palette = "Set2") +
+          scale_fill_brewer(palette = "PuOr") +
           theme(plot.margin = margin(1, 0, 0, 1.5, "cm"), legend.position = "none"),
         # width = 1115,
         tooltip =  "text"

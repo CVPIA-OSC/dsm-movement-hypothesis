@@ -7,12 +7,16 @@ data_selection <-
            input_year_type_selection,
            input_plot_type) {
 
-    hypothesis_abbr_lookup <- c("Base Filling + Base Movement" = "H0",
-                           "Base Filling + Snowglobe Movement" = "H1",
-                           "Base Filling + Genetics Movement" = "H2",
-                           "Density Filling + Base Movement" = "H3",
-                           "Density Filling + Snowglobe Movement" = "H4",
-                           "Density Filling + Genetics Movement" = "H5")
+    hypothesis_abbr_lookup <- c("Base fill + No Additional Movement" = "H0",
+                           "Base fill + Snow Globe" = "H1",
+                           "Base fill + Genetics" = "H2",
+                           "Base fill + Temperature" = "H3",
+                           "Base fill + Time" = "H4",
+                           "Density fill + No Additional Movement" = "H5",
+                           "Density fill + Snow Globe" = "H6",
+                           "Density fill + Genetics" = "H7",
+                           "Density fill + Temperature" = "H8",
+                           "Density fill + Time" = "H9")
 
     raw_data <- switch(
       input_run,

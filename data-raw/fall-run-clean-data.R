@@ -3,7 +3,7 @@ library(lubridate)
 
 s <- fallRunDSM::fall_run_model()
 ss <- fallRunDSM::fall_run_model(seeds = s, mode = "simulate")
-write_rds(ss$juveniles_at_chipps, "data/fall-run-juveniles-at-chipps.rds")
+write_rds(ss$north_delta_fish, "data/fall-run-juveniles-at-chipps.rds")
 
 fall_run_hypothesis_raw <- read_rds("data/fall-run-juveniles-at-chipps.rds")
 
@@ -30,12 +30,18 @@ san_joaquin_year_types <- waterYearType::water_year_indices %>%
   select(WY, Yr_type)
 
 size_class_lookup <- c("s"= "small", "m" = "medium", "l" = "large", "vl" = "very large")
-hypothesis_lookup <- c("zero" = "Base Filling + Base Movement",
-                       "one" = "Base Filling + Snowglobe Movement",
-                       "two" = "Base Filling + Genetics Movement",
-                       "three" = "Density Filling + Base Movement",
-                       "four" = "Density Filling + Snowglobe Movement",
-                       "five" = "Density Filling + Genetics Movement")
+hypothesis_lookup <- c(
+  "zero" = "Base fill + No Additional Movement",
+  "one" = "Base fill + Snow Globe",
+  "two" = "Base fill + Genetics",
+  "three" = "Base fill + Temperature",
+  "four" = "Base fill + Time",
+  "five" = "Density fill + No Additional Movement",
+  "six" = "Density fill + Snow Globe",
+  "seven" = "Density fill + Genetics",
+  "eight" = "Density fill + Temperature",
+  "nine" = "Density fill + Time"
+)
 
 sac_valley_fall_run <- sac_valley_fall_run %>%
   mutate(size_class_label = factor(size_class_lookup[size_class], levels = c("small", "medium", "large", "very large")),
@@ -67,7 +73,7 @@ fall_run_outmigration_prop %>%
   filter(cal_year == 1995, watershed == "Upper Sacramento River",
          hypothesis == "zero") %>% pull(prop_fish) %>% sum()
 
-write_rds(fall_run_outmigration_prop, "data/fall-run-juveniles-at-chipps-proportion-outmigration.rds")
+write_rds(fall_run_outmigration_prop, "data/fall-run-juveniles-at-chipps-proportion-outmigration__1.rds")
 
 # Valley-wide proportions -------------------------------------------------
 # get valley total by summing across all the watersheds, preserve size_class
@@ -97,4 +103,4 @@ fr_valley_wide_outmigration_props %>%
   geom_col() +
   facet_wrap(vars(month_label), nrow = 4)
 
-write_rds(fr_valley_wide_outmigration_props, "data/valley-wide-FR-juveniles-at-chipps.rds")
+write_rds(fr_valley_wide_outmigration_props, "data/valley-wide-FR-juveniles-at-chipps__1.rds")
