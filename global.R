@@ -40,6 +40,9 @@ late_fall_run_hypothesis <- read_rds("data/late-fall-run-juveniles-at-chipps-cle
 fall_run_hypothesis <- read_rds("data/fall-run-juveniles-at-chipps-proportion-outmigration__1.rds") %>%
   filter(watershed %in% fall_run_watersheds)
 
+fall_run_hypothesis_growth_mod <- read_rds("data/fall-run-juveniles-at-chipps-proportion-outmigration-growth-mod.rds") %>%
+  filter(watershed %in% fall_run_watersheds)
+
 spring_run_hypothesis <- read_rds("data/spring-run-juveniles-at-chipps-proportion-outmigration.rds") %>%
   filter(watershed %in% spring_run_watersheds)
 
@@ -48,6 +51,8 @@ winter_run_hypothesis <- read_rds("data/winter-run-juveniles-at-chipps-proportio
 
 late_fall_run_valley_wide <- read_rds("data/valley-wide-LFR-juveniles-at-chipps.rds")
 fall_run_valley_wide <- read_rds("data/valley-wide-FR-juveniles-at-chipps__1.rds")
+fall_run_valley_wide_growth_mod <- read_rds("data/valley-wide-FR-juveniles-at-chipps-growth-mod.rds")
+
 spring_run_valley_wide <- read_rds("data/valley-wide-SR-juveniles-at-chipps.rds")
 winter_run_valley_wide <- read_rds("data/valley-wide-WR-juveniles-at-chipps.rds")
 # options(shiny.reactlog=TRUE)
