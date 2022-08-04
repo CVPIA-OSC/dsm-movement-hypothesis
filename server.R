@@ -6,6 +6,7 @@ shinyServer(function(input, output) {
     switch(input$run,
            "Late-Fall Run" = late_fall_run_watersheds,
            "Fall Run" = fall_run_watersheds,
+           "Fall Run (growth mod)" = fall_run_watersheds,
            "Spring Run" = spring_run_watersheds,
            "Winter Run" = winter_run_watersheds,)
   })
@@ -134,7 +135,6 @@ shinyServer(function(input, output) {
     }
     # })
   })
-
 
   output$hypothesis_plot_top <- renderPlotly({
     # req(exists(input$year_type_selection, inherits = FALSE), cancelOutput = TRUE)

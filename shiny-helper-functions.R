@@ -22,6 +22,7 @@ data_selection <-
       input_run,
       "Late-Fall Run" = late_fall_run_hypothesis,
       "Fall Run" = fall_run_hypothesis,
+      "Fall Run (growth mod)" = fall_run_hypothesis_growth_mod,
       "Spring Run" = spring_run_hypothesis,
       "Winter Run" = winter_run_hypothesis
     )

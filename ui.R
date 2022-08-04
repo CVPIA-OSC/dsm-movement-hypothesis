@@ -91,6 +91,7 @@ shinyUI(fluidPage(
                         "run",
                         label = "Select Run",
                         choices = list("Fall Run" = "Fall Run",
+                                       "Fall Run (growth mod)" = "Fall Run (growth mod)",
                                        "Late-Fall Run" = "Late-Fall Run",
                                        "Spring Run" = "Spring Run",
                                        "Winter Run" = "Winter Run")
@@ -103,7 +104,7 @@ shinyUI(fluidPage(
                         label = "Select Location Type",
                         choices = list("Watershed" = "watershed",
                                        "Central Valley" = "region"),
-                        selected = "watershed"
+                        selected = "region"
                     )
                 ),
                 column(width = 2,
