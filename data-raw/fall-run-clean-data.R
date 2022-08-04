@@ -115,21 +115,6 @@ params_growth_mod$growth_rates_floodplain <-
 
 
 # compare the two
-params_growth_mod$growth_rates |>
-  as_tibble() |>
-  mutate(transition_from = c("s", "m", "l", "vl")) |>
-  pivot_longer(names_to = "transition_to", values_to = "probability", s:vl) |>
-  mutate(
-    transition_from = factor(transition_from, levels = c("s", "m", "l", "vl")),
-    transition_to = factor(transition_to, levels = c("s", "m", "l", "vl"))
-  ) |>
-  ggplot() +
-  geom_raster(aes(x = transition_from, y = transition_to, fill = probability),
-              interpolate = TRUE) +
-  scale_fill_gradient(low = "blue", high = "red") +
-  labs(x = "Transition from", y = "Transition to",
-       fill = "Prob.", title = "Ichannel Growth: .35mm/day -- Floodplain Growth: .74mm/day")
-
 fallRunDSM::params$growth_rates |>
   as_tibble() |>
   mutate(transition_from = c("s", "m", "l", "vl")) |>
@@ -140,12 +125,33 @@ fallRunDSM::params$growth_rates |>
   ) |>
   ggplot() +
   geom_raster(aes(x = transition_from, y = transition_to, fill = probability),
-              interpolate = TRUE) +
-  scale_fill_gradient(low = "blue", high = "red") +
-  scale_fill_gradient(low = "blue", high = "red") +
+              interpolate = F) +
+  scale_fill_gradient(low = "#253df5", high = "#ff3636") +
   labs(x = "Transition from", y = "Transition to",
-       fill = "Prob.", title = "Ichannel Growth: .5mm/day -- Floodplain Growth: 1.06mm/day")
+       fill = "Prob.", title = "Base Growth: Ichannel: .5mm/day -- Floodplain: 1.06mm/day") +
+  theme_bw()
 
+ggsave("plots/transition-matrix-base-growth.png")
+
+
+
+params_growth_mod$growth_rates |>
+  as_tibble() |>
+  mutate(transition_from = c("s", "m", "l", "vl")) |>
+  pivot_longer(names_to = "transition_to", values_to = "probability", s:vl) |>
+  mutate(
+    transition_from = factor(transition_from, levels = c("s", "m", "l", "vl")),
+    transition_to = factor(transition_to, levels = c("s", "m", "l", "vl"))
+  ) |>
+  ggplot() +
+  geom_raster(aes(x = transition_from, y = transition_to, fill = probability),
+              interpolate = F) +
+  scale_fill_gradient(low = "#253df5", high = "#ff3636") +
+  labs(x = "Transition from", y = "Transition to",
+       fill = "Prob.", title = "Modified Growth: Ichannel: .35mm/day -- Floodplain: .74mm/day") +
+  theme_bw()
+
+ggsave("plots/transition-matrix-35mm-growth.png")
 
 
 
